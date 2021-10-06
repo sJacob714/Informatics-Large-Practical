@@ -41,10 +41,19 @@ public class Menus {
     }
 
     public int getDeliveryCost(String... items){
-        int totalCost = 0;
-        for (String item: items){
-
+        int totalCost = 50;
+        for (String search: items){
+            outerLoop:
+            for (Menu menu: menus){
+                for (MenuItem item: menu.menu){
+                    //System.out.println(item.item);
+                    if (item.item.equals(search)){
+                        totalCost = totalCost + item.pence;
+                        break outerLoop;
+                    }
+                }
+            }
         }
-        return 0;
+        return totalCost;
     }
 }
