@@ -25,13 +25,9 @@ public class Menus {
         HttpRequest request = HttpRequest.newBuilder().uri(URI.create(urlString)).build();
 
         try {
-
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-
-
         } catch (IOException e) {
             e.printStackTrace();
-
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -46,7 +42,6 @@ public class Menus {
             outerLoop:
             for (Menu menu: menus){
                 for (MenuItem item: menu.menu){
-                    //System.out.println(item.item);
                     if (item.item.equals(search)){
                         totalCost = totalCost + item.pence;
                         break outerLoop;

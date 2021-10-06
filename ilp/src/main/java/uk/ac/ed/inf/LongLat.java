@@ -16,6 +16,7 @@ public class LongLat {
 
     /**
      * Checks whether the instance of LongLat is within the drone confinement area
+     *
      * @return True if Coordinates are in confinement are, False otherwise
      */
     public boolean isConfined(){
@@ -27,21 +28,34 @@ public class LongLat {
     }
 
     /**
-     * Calculates the pythagorean distance between this instance of LongLat and the location coordinates
-     * @param location
-     * @return
+     * Calculates the pythagorean distance to the destination
+     *
+     * @param destination longitude and latitude of destination
+     * @return pythagorean distance between current position and destination
      */
-    public double distanceTo(LongLat location){
-        double longitudeDistance = Math.pow( (location.longitude-longitude), 2);
-        double latitudeDistance = Math.pow( (location.latitude-latitude) , 2);
+    public double distanceTo(LongLat destination){
+        double longitudeDistance = Math.pow( (destination.longitude-longitude), 2);
+        double latitudeDistance = Math.pow( (destination.latitude-latitude) , 2);
         double pythagoreanDistance = Math.sqrt( (longitudeDistance + latitudeDistance) );
         return pythagoreanDistance;
     }
 
+    /**
+     * Checks if current location is within 0.00015 degrees of another location
+     *
+     * @param location longitude and latitude of location that is checked if close
+     * @return True if within 0.00015 degrees, false otherwise
+     */
     public boolean closeTo(LongLat location){
         return distanceTo(location) < 0.00015;
     }
 
+    /**
+     * Calculates next position that will be travelled
+     *
+     * @param angle angle that object is facing
+     * @return LongLat object that is the next position
+     */
     public LongLat nextPosition(int angle){
         LongLat nextPosition;
 
