@@ -127,7 +127,6 @@ public class AppTest {
         assertTrue(approxEq(nextPosition, appletonTower));
     }
 
-    /*
     @Test
     public void testMenusOne() {
         // The webserver must be running on port 9898 to run this test.
@@ -190,7 +189,7 @@ public class AppTest {
         );
         // Don't forget the standard delivery charge of 50p
         assertEquals(4 * 460 + 50, totalCost);
-    }*/
+    }
 
 
 }
