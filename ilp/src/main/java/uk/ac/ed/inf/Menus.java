@@ -18,6 +18,13 @@ public class Menus {
     private static final HttpClient client = HttpClient.newHttpClient();
     public ArrayList<Menu> menus;
 
+    /**
+     * Constructor for the Menus class
+     * Sends a get request to the server and parses the response into a list of Menu types
+     *
+     * @param machineName name of the machine that needs to be accessed
+     * @param port port where web server is running
+     */
     public Menus(String machineName, String port){
 
         String urlString = "http://" +machineName+ ":" +port+ "/menus/menus.json";
@@ -36,18 +43,26 @@ public class Menus {
         menus = new Gson().fromJson(response.body(), listType);
     }
 
+    /**
+     * Calculates cost of delivering a number of items
+     *
+     * @param items variable number of items that are to be delivered
+     * @return cost of delivering the items
+     */
     public int getDeliveryCost(String... items){
         int totalCost = 50;
         for (String search: items){
-            outerLoop:
+
+            menuSearch:
             for (Menu menu: menus){
                 for (MenuItem item: menu.menu){
                     if (item.item.equals(search)){
                         totalCost = totalCost + item.pence;
-                        break outerLoop;
+                        break menuSearch;
                     }
                 }
             }
+
         }
         return totalCost;
     }
