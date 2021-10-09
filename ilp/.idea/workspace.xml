@@ -5,8 +5,12 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Shop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/MenuItem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/NotMenuItem.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,7 +47,7 @@
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Shop" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -93,7 +97,14 @@
       <option name="project" value="LOCAL" />
       <updated>1633531171536</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="done stuff">
+      <created>1633601871182</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1633601871182</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

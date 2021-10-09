@@ -1,6 +1,6 @@
 package uk.ac.ed.inf;
 
-public class MenuItem {
+public class NotMenuItem {
     public String item;
     public int pence;
 }

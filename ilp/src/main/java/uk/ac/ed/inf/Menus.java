@@ -5,18 +5,19 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.net.http.HttpResponse.BodyHandler;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
 import com.google.gson.reflect.TypeToken;
-import com.google.gson.stream.JsonReader;
 
 
 public class Menus {
     private static final HttpClient client = HttpClient.newHttpClient();
-    public ArrayList<Menu> menus;
+    private String machineName;
+    private String port;
+    public ArrayList<Shop> ShopsList;
 
     /**
      * Constructor for the Menus class
@@ -26,6 +27,8 @@ public class Menus {
      * @param port port where web server is running
      */
     public Menus(String machineName, String port){
+        this.machineName = machineName;
+        this.port = port;
 
         String urlString = "http://" +machineName+ ":" +port+ "/menus/menus.json";
         HttpResponse<String> response = null;
@@ -39,8 +42,8 @@ public class Menus {
             e.printStackTrace();
         }
 
-        Type listType = new TypeToken<ArrayList<Menu>>(){}.getType();
-        menus = new Gson().fromJson(response.body(), listType);
+        Type listType = new TypeToken<ArrayList<Shop>>(){}.getType();
+        ShopsList = new Gson().fromJson(response.body(), listType);
     }
 
     /**
@@ -51,19 +54,23 @@ public class Menus {
      */
     public int getDeliveryCost(String... items){
         int totalCost = 50;
-        for (String search: items){
 
-            menuSearch:
-            for (Menu menu: menus){
-                for (MenuItem item: menu.menu){
-                    if (item.item.equals(search)){
-                        totalCost = totalCost + item.pence;
+        List<String> searchList = Arrays.asList(items);
+
+        menuSearch:
+        for (Shop shops : ShopsList){
+            for (Shop.MenuItem item: shops.menu){
+                if (searchList.contains(item.item)) {
+                    totalCost = totalCost + item.pence;
+                    searchList.remove(item);
+
+                    if (searchList.isEmpty()) {
                         break menuSearch;
                     }
                 }
             }
-
         }
+
         return totalCost;
     }
 }
