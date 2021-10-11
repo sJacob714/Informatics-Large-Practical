@@ -43,7 +43,7 @@ public class Menus {
             // Sends request command to server, stores response in response variable
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
-        // catches any issues
+        // catches any exceptions
         } catch (ConnectException e){
             System.out.println("Fatal error: Unable to connect to " +
                     machineName + " at port " + port + ".");
@@ -64,6 +64,7 @@ public class Menus {
         }
         else{
             System.err.println("Server Response Failure: "+response.statusCode());
+            System.exit(1);
         }
     }
 
@@ -74,24 +75,27 @@ public class Menus {
      * @return cost of delivering the items
      */
     public int getDeliveryCost(String... items){
+        // totalCost is initially set to 50 as standard delivery charge is 50p
         int totalCost = 50;
 
+        // Converts input into a List
         List<String> searchList = Arrays.asList(items);
 
-        menuSearch:
-        for (Shop shops : ShopsList){
-            for (Shop.MenuItem item: shops.menu){
-                if (searchList.contains(item.item)) {
-                    totalCost = totalCost + item.pence;
-                    searchList.remove(item);
+        // Goes through every item in searchList
+        for (String search: searchList) {
+            // Iterates through every item in every menu
+            menuSearch:
+            for (Shop shops : ShopsList) {
+                for (Shop.MenuItem item : shops.menu) {
 
-                    if (searchList.isEmpty()) {
+                    // If item is within the searchList, add price to totalCost and break out of menuSearch
+                    if (item.item.equals(search)) {
+                        totalCost = totalCost + item.pence;
                         break menuSearch;
                     }
                 }
             }
         }
-
         return totalCost;
     }
 }
