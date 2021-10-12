@@ -136,12 +136,20 @@
       <option name="project" value="LOCAL" />
       <updated>1633987131337</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="changes to documentation">
+      <created>1634032206000</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1634032206000</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="done stuff" />
     <MESSAGE value="Comments Done" />
-    <option name="LAST_COMMIT_MESSAGE" value="Comments Done" />
+    <MESSAGE value="changes to documentation" />
+    <option name="LAST_COMMIT_MESSAGE" value="changes to documentation" />
   </component>
 </project>

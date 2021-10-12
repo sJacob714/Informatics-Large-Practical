@@ -21,7 +21,7 @@ public class Menus {
     private String port;
 
     //List of Shop details and menus
-    public ArrayList<Shop> ShopsList;
+    private ArrayList<Shop> ShopsList;
 
     /**
      * Constructor for the Menus class
