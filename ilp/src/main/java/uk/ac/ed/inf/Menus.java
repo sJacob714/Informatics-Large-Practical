@@ -16,7 +16,7 @@ import com.google.gson.reflect.TypeToken;
 
 public class Menus {
     private static final HttpClient client = HttpClient.newHttpClient();
-    // Details of server that need ot be accessed
+    // Details of server that need to be accessed
     private String machineName;
     private String port;
 
