@@ -1,1 +1,9 @@
+cd C:\Users\samue\Documents\Informatics\year 3\Informatics Large Practical\website
+
 java -jar WebServerLite.jar C:/Users/samue/Documents/Informatics/"year 3"/"Informatics Large Practical"/website 9898
+
+
+
+cd C:\Users\samue\Documents\Informatics\year 3\Informatics Large Practical\database
+
+java -jar "%DERBY_HOME%"\lib\derbyrun.jar server start
