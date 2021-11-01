@@ -22,6 +22,17 @@ public class Locations {
     private List<Line2D> noFlyPerimeter = new ArrayList<>();
 
     public Locations(String machineName, String port){
+        getLandmarks(machineName, port);
+        getNoFlyZone(machineName, port);
+    }
+
+    /**
+     * Gets landmarks from server and parses it in
+     *
+     * @param machineName name of machine that needs to be accessed
+     * @param port port where webserver is running
+     */
+    private void getLandmarks(String machineName, String port){
         String urlString;
         HttpRequest request;
         HttpResponse<String> response = null;
@@ -50,6 +61,19 @@ public class Locations {
             System.err.println("Server Response Failure: "+response.statusCode());
             System.exit(1);
         }
+    }
+
+    /**
+     * Gets noFlyZone from server and parses it in
+     * Saves this noFlyZone as a list of straight lines around the perimeter
+     *
+     * @param machineName name of machine that needs to be accessed
+     * @param port port where webserver is running
+     */
+    private void getNoFlyZone(String machineName, String port){
+        String urlString;
+        HttpRequest request;
+        HttpResponse<String> response = null;
 
         urlString = "http://" +machineName+ ":" +port+ "/buildings/no-fly-zones.geojson";
         request = HttpRequest.newBuilder().uri(URI.create(urlString)).build();
@@ -77,18 +101,22 @@ public class Locations {
                     }
                 }
             }
-
-
         }
-
         else{
             System.err.println("Server Response Failure: "+response.statusCode());
             System.exit(1);
         }
     }
 
+    /**
+     * Checks if straight line path from start to end stays outside of no-fly zone
+     *
+     * @param start starting location
+     * @param end ending location
+     * @return True if straight line path stays outside of no-fly zone
+     */
     public boolean outOfNoFlyCheck(LongLat start, LongLat end){
-        Line2D line = new Line2D.Double(start.longitude, start.latitude, end.longitude, end.latitude);
+        Line2D line = new Line2D.Double(start.lng, start.lat, end.lng, end.lat);
 
         for (Line2D perimeter: noFlyPerimeter){
             if (line.intersectsLine(perimeter)){

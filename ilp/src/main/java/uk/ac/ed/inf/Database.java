@@ -6,7 +6,7 @@ import java.util.ArrayList;
 public class Database {
     public ArrayList<Order> orders = new ArrayList<>();
 
-    public Database(String machineName, String port, String date){
+    public Database(String machineName, String port, String date, What3WordsConverter converter){
         String jdbcString;
         String query;
         Connection conn = null;
@@ -17,7 +17,6 @@ public class Database {
         try {
 
             conn = DriverManager.getConnection(jdbcString);
-            statement = conn.createStatement();
 
             query = "select * from orders where deliveryDate=(?)";
             psQuery = conn.prepareStatement(query);
@@ -32,7 +31,7 @@ public class Database {
                 order.orderNo = orderResults.getString("orderNo");
                 order.deliveryDate = orderResults.getString("deliveryDate");
                 order.customer = orderResults.getString("customer");
-                order.deliverTo = orderResults.getString("deliverTo");
+                order.deliverTo = converter.convert(orderResults.getString("deliverTo"));
 
                 query = "select * from orderDetails where orderNo=(?)";
                 psQuery = conn.prepareStatement(query);

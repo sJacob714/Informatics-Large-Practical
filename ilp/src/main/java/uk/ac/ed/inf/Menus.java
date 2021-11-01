@@ -98,4 +98,34 @@ public class Menus {
         }
         return totalCost;
     }
+
+    public List<List<LongLat>> getCoordinates(What3WordsConverter converter, String... items){
+        List<List<LongLat>> coordinates = new ArrayList<>();
+        List<LongLat> tempCoordinate;
+        What3Word word;
+
+        // Converts input into a List
+        List<String> searchList = Arrays.asList(items);
+
+        // Goes through every item in searchList
+        for (String search: searchList) {
+            // Iterates through every item in every menu
+            menuSearch:
+            for (Shop shops : ShopsList) {
+                for (Shop.MenuItem item : shops.menu) {
+
+                    // If item is within the searchList, add price to totalCost and break out of menuSearch
+                    if (item.item.equals(search)) {
+                        tempCoordinate = new ArrayList<>();
+                        word = converter.convert(shops.location);
+                        tempCoordinate.add(word.square.northeast);
+                        tempCoordinate.add(word.square.northeast);
+                        coordinates.add(tempCoordinate);
+                        break menuSearch;
+                    }
+                }
+            }
+        }
+        return coordinates;
+    }
 }

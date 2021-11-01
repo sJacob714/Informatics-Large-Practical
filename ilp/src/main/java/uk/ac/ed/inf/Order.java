@@ -6,12 +6,11 @@ public class Order {
     public String orderNo;
     public String deliveryDate;
     public String customer;
-    public String deliverTo;
+    public What3Word deliverTo;
 
     public ArrayList<String> orderItems = new ArrayList<>();
 
     public Order(){
-
     }
 
 }

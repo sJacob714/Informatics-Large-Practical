@@ -51,10 +51,11 @@ public class runCode {
 
     @Test
     public void checkDatabase(){
+        What3WordsConverter converter = new What3WordsConverter("localhost", "9898");
         String date = "2022-05-14";
-        Database database = new Database("localhost", "9876", date);
+        Database database = new Database("localhost", "9876", date, converter);
         for (int i = 0; i<database.orders.size(); i++){
-            System.out.println(database.orders.get(i).orderNo +" "+ database.orders.get(i).deliveryDate +" "+ database.orders.get(i).customer +" "+ database.orders.get(i).deliverTo);
+            System.out.println(database.orders.get(i).orderNo +" "+ database.orders.get(i).deliveryDate +" "+ database.orders.get(i).customer +" "+ database.orders.get(i).deliverTo.square.northeast.lng +" "+ database.orders.get(i).deliverTo.square.northeast.lat);
             for (int j = 0; j<database.orders.get(i).orderItems.size(); j++){
                 System.out.print(database.orders.get(i).orderItems.get(j)+"     ");
             }
