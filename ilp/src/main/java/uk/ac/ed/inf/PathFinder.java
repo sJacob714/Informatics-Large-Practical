@@ -5,19 +5,23 @@ import java.util.PriorityQueue;
 
 public class PathFinder {
      private Locations.NoFlyZone noFlyZone;
-     private LongLat start;
-     private LongLat end;
      private Node node;
 
 
-     public PathFinder(LongLat start, LongLat end, Locations.NoFlyZone noFlyZone){
+     public PathFinder(Locations.NoFlyZone noFlyZone){
           this.noFlyZone = noFlyZone;
+     }
+
+     public ArrayList<LongLat> findPath(LongLat start, LongLat end){
           PriorityQueue<Node> queue = new PriorityQueue<>(this::compare);
           node = new Node(start, end, queue, new ArrayList<>());
+          return node.traverseFrontier();
      }
-     public int compare(Node x1, Node x2){
 
-          return (int)((x1.score-x2.score));
+     private int compare(Node x, Node y){
+          double xScore = (x.visitedLocations.size()*0.00015) + x.currentPosition.distanceTo(x.end);
+          double yScore = (y.visitedLocations.size()*0.00015) + y.currentPosition.distanceTo(y.end);
+          return (int)((xScore-yScore)*1000000);
      }
 
      private class Node{
@@ -26,28 +30,43 @@ public class PathFinder {
           private LongLat end;
           public PriorityQueue<Node> frontier;
           public ArrayList<LongLat> visitedLocations;
-          public double score;
 
           public Node(LongLat currentPosition, LongLat end, PriorityQueue<Node> frontier, ArrayList<LongLat> visitedLocations){
                this.currentPosition = currentPosition;
                this.end = end;
                this.frontier = frontier;
                this.visitedLocations = visitedLocations;
+               this.visitedLocations.add(currentPosition);
+               getNextPositions();
           }
 
-          private void getNextPositions(){
-               ArrayList<Node> nextPositions = new ArrayList<>();
+          public ArrayList<LongLat> traverseFrontier(){
+               Node nextNode;
+               ArrayList<LongLat> returnedList;
+               while (!frontier.isEmpty()) {
+                    nextNode = frontier.remove();
+                    nextNode.frontier = frontier;
+                    if (nextNode.currentPosition.closeTo(end)){
+                         return nextNode.visitedLocations;
+                    }
+                    returnedList = nextNode.traverseFrontier();
+
+                    if (returnedList.size()!=0){
+                         return returnedList;
+                    }
+               }
+               return new ArrayList<>();
+          }
+
+          public void getNextPositions(){
                Node nextNode;
                LongLat possibleNext;
-               PriorityQueue<Node> emptyQueue;
-               ArrayList<LongLat> newVisitedLocations = visitedLocations;
-               newVisitedLocations.add(currentPosition);
+               PriorityQueue<Node> emptyQueue = new PriorityQueue<>();
 
                for (int i = 0; i<360; i+=10){
                     possibleNext = currentPosition.nextPosition(i);
                     if (noFlyZone.outOfNoFlyCheck(currentPosition, possibleNext) && notVisited(possibleNext)){
-                         emptyQueue = new PriorityQueue<>();
-                         nextNode = new Node(possibleNext, end, emptyQueue, newVisitedLocations);
+                         nextNode = new Node(possibleNext, end, emptyQueue, visitedLocations);
                          frontier.add(nextNode);
                     }
                }

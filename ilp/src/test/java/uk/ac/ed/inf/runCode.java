@@ -95,4 +95,9 @@ public class runCode {
         LongLat end = new LongLat(-3.192473, 55.946233);
         return (int)((x1.distanceTo(end)-x2.distanceTo(end))*100000000);
     }
+
+    @Test
+    public void testRandomStuff(){
+        System.out.println((new ArrayList<>()).size());
+    }
 }
