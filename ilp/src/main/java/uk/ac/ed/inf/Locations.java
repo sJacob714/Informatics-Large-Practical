@@ -17,11 +17,10 @@ import java.util.List;
 
 public class Locations {
     private static final HttpClient client = HttpClient.newHttpClient();
-    private FeatureCollection landmarks;
-    private FeatureCollection noFlyZone;
-    private List<Line2D> noFlyPerimeter = new ArrayList<>();
+    public FeatureCollection landmarks;
+    public NoFlyZone noFly;
 
-    public Locations(String machineName, String port){
+    public Locations(String machineName, String port) {
         getLandmarks(machineName, port);
         getNoFlyZone(machineName, port);
     }
@@ -30,35 +29,34 @@ public class Locations {
      * Gets landmarks from server and parses it in
      *
      * @param machineName name of machine that needs to be accessed
-     * @param port port where webserver is running
+     * @param port        port where webserver is running
      */
-    private void getLandmarks(String machineName, String port){
+    private void getLandmarks(String machineName, String port) {
         String urlString;
         HttpRequest request;
         HttpResponse<String> response = null;
 
-        urlString = "http://" +machineName+ ":" +port+ "/buildings/landmarks.geojson";
+        urlString = "http://" + machineName + ":" + port + "/buildings/landmarks.geojson";
         request = HttpRequest.newBuilder().uri(URI.create(urlString)).build();
 
-        try{
+        try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (ConnectException e){
+        } catch (ConnectException e) {
             System.out.println("Fatal error: Unable to connect to " +
                     machineName + " at port " + port + ".");
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Failed to access machine " +machineName+ " at port " +port);
+            System.err.println("Failed to access machine " + machineName + " at port " + port);
             e.printStackTrace();
         } catch (InterruptedException e) {
-            System.err.println("Failed to access machine " +machineName+ " at port " +port);
+            System.err.println("Failed to access machine " + machineName + " at port " + port);
             e.printStackTrace();
         }
 
-        if (response.statusCode()==200){
+        if (response.statusCode() == 200) {
             landmarks = FeatureCollection.fromJson(response.body());
-        }
-        else{
-            System.err.println("Server Response Failure: "+response.statusCode());
+        } else {
+            System.err.println("Server Response Failure: " + response.statusCode());
             System.exit(1);
         }
     }
@@ -68,62 +66,75 @@ public class Locations {
      * Saves this noFlyZone as a list of straight lines around the perimeter
      *
      * @param machineName name of machine that needs to be accessed
-     * @param port port where webserver is running
+     * @param port        port where webserver is running
      */
-    private void getNoFlyZone(String machineName, String port){
+    private void getNoFlyZone(String machineName, String port) {
         String urlString;
         HttpRequest request;
         HttpResponse<String> response = null;
 
-        urlString = "http://" +machineName+ ":" +port+ "/buildings/no-fly-zones.geojson";
+        urlString = "http://" + machineName + ":" + port + "/buildings/no-fly-zones.geojson";
         request = HttpRequest.newBuilder().uri(URI.create(urlString)).build();
 
-        try{
+        try {
             response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        } catch (ConnectException e){
+        } catch (ConnectException e) {
             System.out.println("Fatal error: Unable to connect to " + machineName + " at port " + port + ".");
             System.exit(1);
         } catch (IOException e) {
-            System.err.println("Failed to access machine " +machineName+ " at port " +port);
+            System.err.println("Failed to access machine " + machineName + " at port " + port);
             e.printStackTrace();
         } catch (InterruptedException e) {
-            System.err.println("Failed to access machine " +machineName+ " at port " +port);
+            System.err.println("Failed to access machine " + machineName + " at port " + port);
             e.printStackTrace();
         }
 
-        if (response.statusCode()==200){
+        if (response.statusCode() == 200) {
+            noFly = new NoFlyZone(response);
+        }
+        else {
+            System.err.println("Server Response Failure: " + response.statusCode());
+            System.exit(1);
+        }
+    }
+
+    public class NoFlyZone {
+        private FeatureCollection noFlyZone;
+        private List<Line2D> noFlyPerimeter = new ArrayList<>();
+
+        public NoFlyZone(HttpResponse<String> response) {
             noFlyZone = FeatureCollection.fromJson(response.body());
 
-            for (Feature feature: noFlyZone.features()){
-                for (List<Point> pointList: ((Polygon) feature.geometry()).coordinates()){
-                    for (int i=0; i<pointList.size()-1; i++){;
+            for (Feature feature : noFlyZone.features()) {
+                for (List<Point> pointList : ((Polygon) feature.geometry()).coordinates()) {
+                    for (int i = 0; i < pointList.size() - 1; i++) {
+                        ;
                         noFlyPerimeter.add(new Line2D.Double(pointList.get(i).longitude(), pointList.get(i).latitude(), pointList.get(i + 1).longitude(), pointList.get(i + 1).latitude()));
                     }
                 }
             }
         }
-        else{
-            System.err.println("Server Response Failure: "+response.statusCode());
-            System.exit(1);
-        }
-    }
 
-    /**
-     * Checks if straight line path from start to end stays outside of no-fly zone
-     *
-     * @param start starting location
-     * @param end ending location
-     * @return True if straight line path stays outside of no-fly zone
-     */
-    public boolean outOfNoFlyCheck(LongLat start, LongLat end){
-        Line2D line = new Line2D.Double(start.lng, start.lat, end.lng, end.lat);
+        /**
+         * Checks if straight line path from start to end stays outside of no-fly zone
+         *
+         * @param start starting location
+         * @param end ending location
+         * @return True if straight line path stays outside of no-fly zone
+         */
+        public boolean outOfNoFlyCheck (LongLat start, LongLat end){
+            Line2D line = new Line2D.Double(start.lng, start.lat, end.lng, end.lat);
 
-        for (Line2D perimeter: noFlyPerimeter){
-            if (line.intersectsLine(perimeter)){
-                return false;
+            for (Line2D perimeter : noFlyPerimeter) {
+                if (line.intersectsLine(perimeter)) {
+                    return false;
+                }
             }
-        }
 
-        return true;
+            return true;
+        }
     }
+
+
 }
+

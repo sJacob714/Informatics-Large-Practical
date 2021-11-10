@@ -114,7 +114,7 @@ public class Menus {
             for (Shop shops : ShopsList) {
                 for (Shop.MenuItem item : shops.menu) {
 
-                    // If item is within the searchList, add price to totalCost and break out of menuSearch
+                    // If item is within the searchList, add shop location to list
                     if (item.item.equals(search)) {
                         tempCoordinate = new ArrayList<>();
                         word = converter.convert(shops.location);

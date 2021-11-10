@@ -10,7 +10,6 @@ public class Database {
         String jdbcString;
         String query;
         Connection conn = null;
-        Statement statement = null;
         PreparedStatement psQuery = null;
 
         jdbcString = "jdbc:derby://" +machineName+ ":" +port+ "/derbyDB";
@@ -27,20 +26,7 @@ public class Database {
 
             Order order;
             while (orderResults.next()){
-                order = new Order();
-                order.orderNo = orderResults.getString("orderNo");
-                order.deliveryDate = orderResults.getString("deliveryDate");
-                order.customer = orderResults.getString("customer");
-                order.deliverTo = converter.convert(orderResults.getString("deliverTo"));
-
-                query = "select * from orderDetails where orderNo=(?)";
-                psQuery = conn.prepareStatement(query);
-                psQuery.setString(1, order.orderNo);
-
-                orderDetailsResults = psQuery.executeQuery();
-                while (orderDetailsResults.next()){
-                    order.orderItems.add(orderDetailsResults.getString("item"));
-                }
+                order = new Order(orderResults, conn, converter);
                 orders.add(order);
             }
 

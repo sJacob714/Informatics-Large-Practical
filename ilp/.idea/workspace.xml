@@ -5,19 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinding.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3WordsConverter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Database.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Locations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Locations.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/LongLat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/LongLat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinding.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/uk/ac/ed/inf/AppTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/uk/ac/ed/inf/AppTest.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -42,6 +38,17 @@
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
   </component>
+  <component name="HighlightingSettingsPerFile">
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/LongLat.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Database.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Shop.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Locations.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" root0="FORCE_HIGHLIGHTING" />
+    <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" root0="FORCE_HIGHLIGHTING" />
+  </component>
   <component name="ProjectId" id="1ylwg5nOGtyE1ByF8j9bCcmFuuQ" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
@@ -51,29 +58,14 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../year 2/Software Engineering and Professional Issues/Sepp Coursework/Coursework 3/Sepp-Coursework3/uoe-sepp2021-coursework3-skeleton-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../year 1/Informatics 1b/Weekly Lab" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.0" />
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
-  <component name="RunManager" selected="JUnit.runCode.checkDatabase">
-    <configuration name="AppTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="ilp" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.Shop" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="uk.ac.ed.inf" />
-      <option name="MAIN_CLASS_NAME" value="uk.ac.ed.inf.AppTest" />
-      <option name="TEST_OBJECT" value="class" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="locationCheck.checkLocations" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="JUnit.runCode.checkPathFinder">
+    <configuration name="runCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
@@ -82,9 +74,8 @@
         </pattern>
       </extension>
       <option name="PACKAGE_NAME" value="uk.ac.ed.inf" />
-      <option name="MAIN_CLASS_NAME" value="uk.ac.ed.inf.locationCheck" />
-      <option name="METHOD_NAME" value="checkLocations" />
-      <option name="TEST_OBJECT" value="method" />
+      <option name="MAIN_CLASS_NAME" value="uk.ac.ed.inf.runCode" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -137,13 +128,29 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="runCode.checkPathFinder" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="ilp" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="uk.ac.ed.inf" />
+      <option name="MAIN_CLASS_NAME" value="uk.ac.ed.inf.runCode" />
+      <option name="METHOD_NAME" value="checkPathFinder" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.runCode.checkDatabase" />
+        <item itemvalue="JUnit.runCode.checkPathFinder" />
         <item itemvalue="JUnit.runCode.checkLocations" />
+        <item itemvalue="JUnit.runCode" />
+        <item itemvalue="JUnit.runCode.checkDatabase" />
         <item itemvalue="JUnit.runCode.check" />
-        <item itemvalue="JUnit.locationCheck.checkLocations" />
-        <item itemvalue="JUnit.AppTest" />
       </list>
     </recent_temporary>
   </component>
@@ -236,7 +243,14 @@
       <option name="project" value="LOCAL" />
       <updated>1635590840039</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="What3Word parsing added">
+      <created>1635792787261</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1635792787261</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -245,6 +259,7 @@
     <MESSAGE value="changes to documentation" />
     <MESSAGE value="made shopList private" />
     <MESSAGE value="Can now parse in GeoJson and Database" />
-    <option name="LAST_COMMIT_MESSAGE" value="Can now parse in GeoJson and Database" />
+    <MESSAGE value="What3Word parsing added" />
+    <option name="LAST_COMMIT_MESSAGE" value="What3Word parsing added" />
   </component>
 </project>

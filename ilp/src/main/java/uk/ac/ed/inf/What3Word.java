@@ -9,8 +9,12 @@ public class What3Word {
     public String language;
     public String map;
 
+
+
     public static class Square{
         LongLat southwest;
         LongLat northeast;
+
+
     }
 }

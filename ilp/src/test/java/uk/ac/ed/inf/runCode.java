@@ -12,6 +12,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.PriorityQueue;
 
 import static org.junit.Assert.*;
 
@@ -30,19 +31,19 @@ public class runCode {
 
         LongLat start = new LongLat(-3.1881, 	55.9448);
         LongLat end = new LongLat(-3.1880, 55.9446);
-        assertFalse(location.outOfNoFlyCheck(start,end));
+        assertFalse(location.noFly.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1881, 	55.9448);
         end = new LongLat(-3.1880, 	55.9445);
-        assertFalse(location.outOfNoFlyCheck(start,end));
+        assertFalse(location.noFly.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1889, 	55.9454);
         end = new LongLat(-3.1885, 	55.9455);
-        assertTrue(location.outOfNoFlyCheck(start,end));
+        assertTrue(location.noFly.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1892, 	55.9445);
         end = new LongLat(-3.1890, 	55.9445);
-        assertTrue(location.outOfNoFlyCheck(start,end));
+        assertTrue(location.noFly.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1889, 	55.9447);
         end = new LongLat(-3.1890, 	55.9448);
@@ -61,5 +62,37 @@ public class runCode {
             }
             System.out.println();
         }
+    }
+
+    @Test
+    public void checkPathFinder(){
+        LongLat end = new LongLat(-3.192473, 55.946233);
+
+        LongLat x1 = new LongLat(-3.192472, 55.946233);
+        LongLat x4 = new LongLat(-3.192475, 55.946233);
+        LongLat x2 = new LongLat(-3.192477, 55.946233);
+        LongLat x3 = new LongLat(-3.192476, 55.946233);
+        LongLat x5 = new LongLat(-3.192470, 55.946233);
+        LongLat x6 = new LongLat(-3.192474, 55.946234);
+        LongLat x7 = new LongLat(-3.192473, 55.946234);
+
+        PriorityQueue<LongLat> queue = new PriorityQueue<>(this::compare);
+        queue.add(x3);
+        queue.add(x2);
+        queue.add(x1);
+        queue.add(x4);
+        queue.add(x5);
+        queue.add(x6);
+        queue.add(x7);
+
+        for (int i =0; i<7; i++){
+            LongLat item = queue.remove();
+            System.out.println(item.lng + " " + item.lat);
+            System.out.println(item.distanceTo(end));
+        }
+    }
+    public int compare(LongLat x1, LongLat x2){
+        LongLat end = new LongLat(-3.192473, 55.946233);
+        return (int)((x1.distanceTo(end)-x2.distanceTo(end))*100000000);
     }
 }
