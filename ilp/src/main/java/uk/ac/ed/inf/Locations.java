@@ -98,7 +98,7 @@ public class Locations {
         }
     }
 
-    public class NoFlyZone {
+    public static class NoFlyZone {
         private FeatureCollection noFlyZone;
         private List<Line2D> noFlyPerimeter = new ArrayList<>();
 
@@ -113,6 +113,11 @@ public class Locations {
                     }
                 }
             }
+        }
+
+        //TODO: REMOVE THIS IS FOR TESTING ONLY
+        public void setNoFlyPerimeter(List<Line2D> perimeter){
+            noFlyPerimeter = perimeter;
         }
 
         /**

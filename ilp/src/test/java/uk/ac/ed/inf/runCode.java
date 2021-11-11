@@ -26,6 +26,11 @@ public class runCode {
     private final LongLat greyfriarsKirkyard = new LongLat(-3.1928, 55.9469);
 
     @Test
+    public void testRandomStuff(){
+        System.out.println((new ArrayList<>()).size());
+    }
+
+    @Test
     public void checkLocations() {
         Locations location = new Locations("localhost", "9898");
 
@@ -65,7 +70,7 @@ public class runCode {
     }
 
     @Test
-    public void checkPathFinder(){
+    public void checkComparator(){
         LongLat end = new LongLat(-3.192473, 55.946233);
 
         LongLat x1 = new LongLat(-3.192472, 55.946233);
@@ -97,7 +102,60 @@ public class runCode {
     }
 
     @Test
-    public void testRandomStuff(){
-        System.out.println((new ArrayList<>()).size());
+    public void checkPathFinder(){
+        LongLat start = new LongLat(-3.1914,55.9430);
+        LongLat end1 = new LongLat(-3.1847,55.9431);
+        LongLat end2 = new LongLat(-3.1847, 55.9461);
+        Locations location = new Locations("localhost", "9898");
+        ArrayList<LongLat> path;
+
+        location.noFly.setNoFlyPerimeter(new ArrayList<>());
+        PathFinder pathFinder = new PathFinder(location.noFly);
+
+        path = pathFinder.findPath(start, end1);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+
+        path = pathFinder.findPath(start, end2);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+
+        location = new Locations("localhost", "9898");
+        pathFinder = new PathFinder(location.noFly);
+
+        path = pathFinder.findPath(start, end2);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+
+        LongLat start1 = new LongLat(-3.1898, 	55.9440);
+        LongLat end3 = new LongLat(-3.1903, 55.9456);
+        path = pathFinder.findPath(start1, end3);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+
+        LongLat start2 = new LongLat(-3.1895,55.9428);
+        path = pathFinder.findPath(start2, end3);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
     }
 }

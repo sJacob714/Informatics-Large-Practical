@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Locations.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Locations.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" afterDir="false" />
     </list>
@@ -58,7 +59,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
   </component>
-  <component name="RunManager" selected="JUnit.runCode.testRandomStuff">
+  <component name="RunManager" selected="JUnit.runCode.checkPathFinder">
     <configuration name="runCode" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="ilp" />
       <extension name="coverage">
@@ -140,8 +141,8 @@
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.runCode.testRandomStuff" />
         <item itemvalue="JUnit.runCode.checkPathFinder" />
+        <item itemvalue="JUnit.runCode.testRandomStuff" />
         <item itemvalue="JUnit.runCode.checkLocations" />
         <item itemvalue="JUnit.runCode" />
         <item itemvalue="JUnit.runCode.checkDatabase" />
@@ -251,7 +252,14 @@
       <option name="project" value="LOCAL" />
       <updated>1636542866748</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="First version of PathFinder">
+      <created>1636547884196</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1636547884196</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -262,6 +270,7 @@
     <MESSAGE value="Can now parse in GeoJson and Database" />
     <MESSAGE value="What3Word parsing added" />
     <MESSAGE value="Started PathFinding Algorithm" />
-    <option name="LAST_COMMIT_MESSAGE" value="Started PathFinding Algorithm" />
+    <MESSAGE value="First version of PathFinder" />
+    <option name="LAST_COMMIT_MESSAGE" value="First version of PathFinder" />
   </component>
 </project>
