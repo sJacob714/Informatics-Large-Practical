@@ -156,6 +156,9 @@ public class runCode {
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
+        //for (int i = 0; i<path.size()-1; i++){
+        //    System.out.println(path.get(i).distanceTo(path.get(i+1)));
+        //}
         System.out.println();
     }
 }
