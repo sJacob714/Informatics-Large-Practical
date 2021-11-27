@@ -15,17 +15,20 @@ public class PathFinder {
      }
 
      public ArrayList<LongLat> findPath(LongLat start, LongLat end){
+          ArrayList<LongLat> path = new ArrayList<>();
+          if (start.closeTo(end)){
+               path.add(start);
+               return path;
+          }
           PriorityQueue<Node> queue = new PriorityQueue<>();
           node = new Node(start, null, end, queue, new ArrayList<>());
           node.visitedLocations.add(start);
           node.getNextPositions();
-          return node.traverseFrontier().getPath();
-     }
-
-     private int compare(Node x, Node y){
-          double xScore = (x.visitedLocations.size()*0.00015) + x.currentPosition.distanceTo(x.end);
-          double yScore = (y.visitedLocations.size()*0.00015) + y.currentPosition.distanceTo(y.end);
-          return (int)((xScore-yScore)*1000000);
+          path = node.traverseFrontier().getPath();
+          if (false){
+               node.optimizePath(start, path);
+          }
+          return path;
      }
 
      private class Node implements Comparable<Node>{
@@ -47,9 +50,23 @@ public class PathFinder {
 
           @Override
           public int compareTo(Node node){
-               double xScore = (this.visitedLocations.size()*0.00015) + this.currentPosition.distanceTo(this.end);
-               double yScore = (node.visitedLocations.size()*0.00015) + node.currentPosition.distanceTo(node.end);
-               return (int)((xScore-yScore)*1000000000);
+               double score1 = /*(this.visitedLocations.size()*0.00015) + */this.currentPosition.distanceTo(this.end);
+               double score2 = /*(node.visitedLocations.size()*0.00015) + */node.currentPosition.distanceTo(node.end);
+
+               /*
+               double lineLng = this.currentPosition.lng + (this.currentPosition.lng-this.previousNode.currentPosition.lng)*1000;
+               double lineLat = this.currentPosition.lat + (this.currentPosition.lat-this.previousNode.currentPosition.lat)*1000;
+               if (noFlyZone.outOfNoFlyCheck(this.currentPosition, new LongLat(lineLng, lineLat))){
+                    score1+=100000;
+               }
+               lineLng = node.currentPosition.lng + (node.currentPosition.lng-node.previousNode.currentPosition.lng)*1000;
+               lineLat = node.currentPosition.lat + (node.currentPosition.lat-node.previousNode.currentPosition.lat)*1000;
+               if (noFlyZone.outOfNoFlyCheck(node.currentPosition, new LongLat(lineLng, lineLat))){
+                    score2+=100000;
+               }
+                */
+
+               return (int)((score1-score2)*1000000000);
           }
 
           public Node traverseFrontier(){
@@ -107,6 +124,24 @@ public class PathFinder {
                }
                Collections.reverse(traversedPath);
                return traversedPath;
+          }
+
+          public ArrayList<LongLat> optimizePath(LongLat start, ArrayList<LongLat> path){
+               ArrayList<LongLat> optimizedPath = new ArrayList<LongLat>();
+               LongLat coordinate = start;
+               Collections.reverse(path);
+               for (LongLat point: path){
+                    if (!noFlyZone.outOfNoFlyCheck(point, start)){
+                         optimizedPath.add(point);
+                    }
+                    else{
+                         coordinate = point;
+                         break;
+                    }
+               }
+               //optimizedPath.addAll(findPath(coordinate, start, false));
+               //Collections.
+               return null;
           }
 
           private boolean notVisited(LongLat position){

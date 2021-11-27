@@ -104,7 +104,7 @@ public class runCode {
     @Test
     public void checkPathFinder(){
         LongLat start = new LongLat(-3.1914,55.9430);
-        LongLat end1 = new LongLat(-3.1847,55.9431);
+        LongLat end = new LongLat(-3.1847,55.9431);
         LongLat end2 = new LongLat(-3.1847, 55.9461);
         Locations location = new Locations("localhost", "9898");
         ArrayList<LongLat> path;
@@ -112,7 +112,7 @@ public class runCode {
         location.noFly.setNoFlyPerimeter(new ArrayList<>());
         PathFinder pathFinder = new PathFinder(location.noFly);
 
-        path = pathFinder.findPath(start, end1);
+        path = pathFinder.findPath(start, end);
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
@@ -159,6 +159,18 @@ public class runCode {
         //for (int i = 0; i<path.size()-1; i++){
         //    System.out.println(path.get(i).distanceTo(path.get(i+1)));
         //}
+        System.out.println();
+
+        start = new LongLat(-3.1845,55.9428);
+        end   = new LongLat(-3.1924,55.9462);
+        path = pathFinder.findPath(start, end);
+        System.out.println(path.size());
+        System.out.print("[");
+        for (LongLat x: path){
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+        System.out.println("Straight line:" + start.distanceTo(end)/0.00015);
         System.out.println();
     }
 }

@@ -101,6 +101,7 @@ public class Menus {
 
     public List<List<LongLat>> getCoordinates(What3WordsConverter converter, String... items){
         List<List<LongLat>> coordinates = new ArrayList<>();
+        List<Shop> previousShops = new ArrayList<>();
         List<LongLat> tempCoordinate;
         What3Word word;
 
@@ -111,13 +112,17 @@ public class Menus {
         for (String search: searchList) {
             // Iterates through every item in every menu
             menuSearch:
-            for (Shop shops : ShopsList) {
-                for (Shop.MenuItem item : shops.menu) {
+            for (Shop shop : ShopsList) {
+                for (Shop.MenuItem item : shop.menu) {
 
                     // If item is within the searchList, add shop location to list
                     if (item.item.equals(search)) {
+                        if (previousShops.contains(shop)){
+                            break menuSearch;
+                        }
+                        previousShops.add(shop);
                         tempCoordinate = new ArrayList<>();
-                        word = converter.convert(shops.location);
+                        word = converter.convert(shop.location);
                         tempCoordinate.add(word.square.northeast);
                         tempCoordinate.add(word.square.northeast);
                         coordinates.add(tempCoordinate);

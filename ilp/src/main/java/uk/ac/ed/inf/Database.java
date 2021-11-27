@@ -36,5 +36,9 @@ public class Database {
 
     }
 
+    public Order getNextOrder(){
+        return null;
+    }
+
 
 }
