@@ -1,17 +1,8 @@
 package uk.ac.ed.inf;
 
-import com.mapbox.geojson.*;
 import org.junit.Test;
 
-import java.awt.geom.Line2D;
-import java.io.IOException;
-import java.net.ConnectException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.PriorityQueue;
 
 import static org.junit.Assert.*;
@@ -33,22 +24,23 @@ public class runCode {
     @Test
     public void checkLocations() {
         Locations location = new Locations("localhost", "9898");
+        NoFlyZone noFlyZone = location.getNoFlyZone();
 
         LongLat start = new LongLat(-3.1881, 	55.9448);
         LongLat end = new LongLat(-3.1880, 55.9446);
-        assertFalse(location.noFly.outOfNoFlyCheck(start,end));
+        assertFalse(noFlyZone.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1881, 	55.9448);
         end = new LongLat(-3.1880, 	55.9445);
-        assertFalse(location.noFly.outOfNoFlyCheck(start,end));
+        assertFalse(noFlyZone.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1889, 	55.9454);
         end = new LongLat(-3.1885, 	55.9455);
-        assertTrue(location.noFly.outOfNoFlyCheck(start,end));
+        assertTrue(noFlyZone.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1892, 	55.9445);
         end = new LongLat(-3.1890, 	55.9445);
-        assertTrue(location.noFly.outOfNoFlyCheck(start,end));
+        assertTrue(noFlyZone.outOfNoFlyCheck(start,end));
 
         start = new LongLat(-3.1889, 	55.9447);
         end = new LongLat(-3.1890, 	55.9448);
@@ -58,12 +50,18 @@ public class runCode {
     @Test
     public void checkDatabase(){
         What3WordsConverter converter = new What3WordsConverter("localhost", "9898");
+        Menus menus = new Menus("localhost","9898");
         String date = "2022-05-14";
-        Database database = new Database("localhost", "9876", date, converter);
-        for (int i = 0; i<database.orders.size(); i++){
-            System.out.println(database.orders.get(i).orderNo +" "+ database.orders.get(i).deliveryDate +" "+ database.orders.get(i).customer +" "+ database.orders.get(i).deliverTo.square.northeast.lng +" "+ database.orders.get(i).deliverTo.square.northeast.lat);
-            for (int j = 0; j<database.orders.get(i).orderItems.size(); j++){
-                System.out.print(database.orders.get(i).orderItems.get(j)+"     ");
+        Database database = new Database("localhost", "1527");
+        ArrayList<Order> orders = database.getOrders(date, converter, menus);
+        for (int i = 0; i<orders.size(); i++){
+            System.out.println(orders.get(i).orderNo +" "+ orders.get(i).deliveryDate +" "+ orders.get(i).customer +" "+ orders.get(i).deliverTo.lng +" "+ orders.get(i).deliverTo.lat +" "+ orders.get(i).deliveryCost);
+            for (int j = 0; j<orders.get(i).orderItems.size(); j++){
+                System.out.print(orders.get(i).orderItems.get(j)+"     ");
+            }
+            System.out.println();
+            for (int j = 0; j<orders.get(i).shopCoordinates.size(); j++){
+                System.out.print("(" + orders.get(i).shopCoordinates.get(j).lng+ ", "+orders.get(i).shopCoordinates.get(j).lat+")     ");
             }
             System.out.println();
         }
@@ -107,70 +105,168 @@ public class runCode {
         LongLat end = new LongLat(-3.1847,55.9431);
         LongLat end2 = new LongLat(-3.1847, 55.9461);
         Locations location = new Locations("localhost", "9898");
+        NoFlyZone noFlyZone = location.getNoFlyZone();
         ArrayList<LongLat> path;
+        ArrayList<Integer> angleList;
 
-        location.noFly.setNoFlyPerimeter(new ArrayList<>());
-        PathFinder pathFinder = new PathFinder(location.noFly);
+        noFlyZone.setNoFlyPerimeter(new ArrayList<>());
+        PathFinder pathFinder = new PathFinder(noFlyZone);
 
-        path = pathFinder.findPath(start, end);
+        pathFinder.createPath(start, end);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        System.out.println();
+        System.out.println();
 
-        path = pathFinder.findPath(start, end2);
+
+        pathFinder.createPath(start, end2);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        System.out.println();
+        System.out.println();
+
 
         location = new Locations("localhost", "9898");
-        pathFinder = new PathFinder(location.noFly);
+        noFlyZone = location.getNoFlyZone();
+        pathFinder = new PathFinder(noFlyZone);
 
-        path = pathFinder.findPath(start, end2);
+        pathFinder.createPath(start, end2);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        System.out.println();
+        System.out.println();
+
 
         LongLat start1 = new LongLat(-3.1898, 	55.9440);
         LongLat end3 = new LongLat(-3.1903, 55.9456);
-        path = pathFinder.findPath(start1, end3);
+        pathFinder.createPath(start1, end3);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
+        System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        System.out.println();
         System.out.println();
 
+
         LongLat start2 = new LongLat(-3.1895,55.9428);
-        path = pathFinder.findPath(start2, end3);
+        pathFinder.createPath(start2, end3);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
-        //for (int i = 0; i<path.size()-1; i++){
-        //    System.out.println(path.get(i).distanceTo(path.get(i+1)));
-        //}
         System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        for (int i = 0; i<path.size()-1; i++){
+            System.out.println(path.get(i).distanceTo(path.get(i+1)));
+        }
+        System.out.println();
+        System.out.println();
+
 
         start = new LongLat(-3.1845,55.9428);
         end   = new LongLat(-3.1924,55.9462);
-        path = pathFinder.findPath(start, end);
+        pathFinder.createPath(start, end);
+        path=pathFinder.getPath();
         System.out.println(path.size());
         System.out.print("[");
         for (LongLat x: path){
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();
+        angleList = pathFinder.getAngleList();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+        System.out.println();
         System.out.println("Straight line:" + start.distanceTo(end)/0.00015);
+        System.out.println();
+    }
+
+    @Test
+    public void checkDrone(){
+        What3WordsConverter converter = new What3WordsConverter("localhost", "9898");
+        Menus menus = new Menus("localhost","9898");
+        String date = "2022-05-14";
+        //date = "2023-12-31";
+        date = "2022-01-01";
+        Database database = new Database("localhost", "1527");
+        ArrayList<Order> orders = database.getOrders(date, converter, menus);
+
+        Locations location = new Locations("localhost", "9898");
+        NoFlyZone noFlyZone = location.getNoFlyZone();
+
+        Drone drone = new Drone(orders,noFlyZone);
+        System.out.println("Total Number of orders: "+drone.orders.size());
+        drone.createFlightPath();
+        ArrayList<LongLat> flightPath = drone.getOverallFlightPath();
+        ArrayList<Integer> angleList = drone.getOverallAngleList();
+
+        System.out.println("Orders not delivered: "+drone.orders.size());
+        System.out.println(flightPath.size());
+        System.out.print("[");
+        for (LongLat x: flightPath){
+            if (x.closeTo(drone.appleton)){
+                //System.out.print("APPLETON");
+            }
+            System.out.print("["+ x.lng +","+ x.lat +"]"+",");
+        }
+        System.out.println();
+        System.out.println(angleList.size());
+        for (int x: angleList){
+            System.out.print(x+" ");
+        }
+
+        for (int i = 0; i<flightPath.size()-1; i++){
+            if (flightPath.get(i).distanceTo(flightPath.get(i+1))>0.00016) {
+                System.out.println(flightPath.get(i).distanceTo(flightPath.get(i + 1)));
+            }
+        }
+
         System.out.println();
     }
 }

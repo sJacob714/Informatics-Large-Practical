@@ -4,19 +4,24 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Database {
-    public ArrayList<Order> orders = new ArrayList<>();
+    public String query;
+    public Connection conn = null;
+    PreparedStatement psQuery = null;
 
-    public Database(String machineName, String port, String date, What3WordsConverter converter){
+    public Database(String machineName, String port){
         String jdbcString;
-        String query;
-        Connection conn = null;
-        PreparedStatement psQuery = null;
-
         jdbcString = "jdbc:derby://" +machineName+ ":" +port+ "/derbyDB";
         try {
-
             conn = DriverManager.getConnection(jdbcString);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
 
+    }
+
+    public ArrayList<Order> getOrders(String date, What3WordsConverter converter, Menus menus){
+        ArrayList<Order> orders = new ArrayList<>();
+        try {
             query = "select * from orders where deliveryDate=(?)";
             psQuery = conn.prepareStatement(query);
             psQuery.setString(1, date);
@@ -26,19 +31,16 @@ public class Database {
 
             Order order;
             while (orderResults.next()){
-                order = new Order(orderResults, conn, converter);
+                order = new Order(orderResults, conn, converter, menus);
                 orders.add(order);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
+        return orders;
     }
 
-    public Order getNextOrder(){
-        return null;
-    }
 
 
 }

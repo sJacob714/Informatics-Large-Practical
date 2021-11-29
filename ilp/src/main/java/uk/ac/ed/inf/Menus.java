@@ -99,10 +99,12 @@ public class Menus {
         return totalCost;
     }
 
-    public List<List<LongLat>> getCoordinates(What3WordsConverter converter, String... items){
-        List<List<LongLat>> coordinates = new ArrayList<>();
+    public ArrayList<LongLat> getCoordinates(What3WordsConverter converter, String... items){
+        ArrayList<LongLat> coordinates = new ArrayList<>();
         List<Shop> previousShops = new ArrayList<>();
-        List<LongLat> tempCoordinate;
+        LongLat tempCoordinate;
+        double centreLng;
+        double centreLat;
         What3Word word;
 
         // Converts input into a List
@@ -121,10 +123,11 @@ public class Menus {
                             break menuSearch;
                         }
                         previousShops.add(shop);
-                        tempCoordinate = new ArrayList<>();
                         word = converter.convert(shop.location);
-                        tempCoordinate.add(word.square.northeast);
-                        tempCoordinate.add(word.square.northeast);
+                        centreLng = (word.square.northeast.lng + word.square.southwest.lng)/2;
+                        centreLat = (word.square.northeast.lat + word.square.southwest.lat)/2;
+                        tempCoordinate = new LongLat(centreLng, centreLat);
+
                         coordinates.add(tempCoordinate);
                         break menuSearch;
                     }

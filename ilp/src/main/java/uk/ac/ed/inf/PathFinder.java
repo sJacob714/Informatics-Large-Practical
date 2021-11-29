@@ -1,57 +1,83 @@
 package uk.ac.ed.inf;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.PriorityQueue;
 
 public class PathFinder {
-     private Locations.NoFlyZone noFlyZone;
+     private NoFlyZone noFlyZone;
      private Node node;
+     private Node finalNode;
+     private ArrayList<LongLat> path;
+     private ArrayList<Integer> angleList;
 
-
-     public PathFinder(Locations.NoFlyZone noFlyZone){
+     public PathFinder(NoFlyZone noFlyZone){
           this.noFlyZone = noFlyZone;
      }
 
-     public ArrayList<LongLat> findPath(LongLat start, LongLat end){
-          ArrayList<LongLat> path = new ArrayList<>();
+     public void createPath(LongLat start, LongLat end){
+          path = new ArrayList<>();
           if (start.closeTo(end)){
                path.add(start);
-               return path;
+               return;
           }
           PriorityQueue<Node> queue = new PriorityQueue<>();
-          node = new Node(start, null, end, queue, new ArrayList<>());
+          node = new Node(start, null, end, queue, new ArrayList<>(), -999);
           node.visitedLocations.add(start);
           node.getNextPositions();
-          path = node.traverseFrontier().getPath();
+          finalNode = node.traverseFrontier();
+          finalNode.constructPath();
+          path = finalNode.getPath();
+          angleList = finalNode.getAngleList();
+
           if (false){
-               node.optimizePath(start, path);
+               finalNode.optimizePath(start, path);
           }
+     }
+
+     public ArrayList<LongLat> getPath(){
           return path;
      }
 
+     public ArrayList<Integer> getAngleList(){
+          return angleList;
+     }
+
      private class Node implements Comparable<Node>{
-          private Locations.NoFlyZone noFlyZone = PathFinder.this.noFlyZone;
+          private NoFlyZone noFlyZone = PathFinder.this.noFlyZone;
           private LongLat currentPosition;
           public Node previousNode;
           private LongLat end;
           public PriorityQueue<Node> frontier;
           public ArrayList<LongLat> visitedLocations;
+          public int distanceTravelled;
+          public int previousAngle;
+          public ArrayList<Integer> angleList;
+          public ArrayList<LongLat> traversedPath;
 
-          public Node(LongLat currentPosition,Node previousNode, LongLat end, PriorityQueue<Node> frontier, ArrayList<LongLat> visitedLocations){
+          public Node(LongLat currentPosition,Node previousNode, LongLat end, PriorityQueue<Node> frontier, ArrayList<LongLat> visitedLocations, int previousAngle){
                this.currentPosition = currentPosition;
                this.previousNode = previousNode;
                this.end = end;
                this.frontier = frontier;
                this.visitedLocations = visitedLocations;
+               this.previousAngle = previousAngle;
+               /*
+               if (previousNode==null){
+                    this.distanceTravelled = 0;
+               }
+               else{
+                    this.distanceTravelled += 0.00015;
+               }
+                */
+
                //this.visitedLocations.add(currentPosition);
           }
 
           @Override
           public int compareTo(Node node){
-               double score1 = /*(this.visitedLocations.size()*0.00015) + */this.currentPosition.distanceTo(this.end);
-               double score2 = /*(node.visitedLocations.size()*0.00015) + */node.currentPosition.distanceTo(node.end);
+               double score1 = /*(this.visitedLocations.size()*0.00015) + */ /*this.distanceTravelled + */this.currentPosition.distanceTo(this.end);
+               double score2 = /*(node.visitedLocations.size()*0.00015) + */ /*node.distanceTravelled + */node.currentPosition.distanceTo(node.end);
 
                /*
                double lineLng = this.currentPosition.lng + (this.currentPosition.lng-this.previousNode.currentPosition.lng)*1000;
@@ -80,7 +106,7 @@ public class PathFinder {
                     nextNode.frontier = frontier;
                     nextNode.visitedLocations.add(nextNode.currentPosition);
                     if (nextNode.currentPosition.closeTo(end)){
-                         System.out.println("FOUND FOUND FOUND FOUND FOUND FOUND");
+                         //System.out.println("FOUND FOUND FOUND FOUND FOUND FOUND");
                          return nextNode;
                          //ArrayList<LongLat> found = new ArrayList<>();
                          //found.add(nextNode.currentPosition);
@@ -106,7 +132,8 @@ public class PathFinder {
                for (int i = 0; i<360; i+=10){
                     possibleNext = currentPosition.nextPosition(i);
                     if (possibleNext.isConfined() && noFlyZone.outOfNoFlyCheck(currentPosition, possibleNext) && notVisited(possibleNext)){
-                         nextNode = new Node(possibleNext, this, end, emptyQueue, visitedLocations);
+                         //visitedLocations.add(possibleNext);
+                         nextNode = new Node(possibleNext, this, end, emptyQueue, visitedLocations, i);
                          frontier.add(nextNode);
                          //System.out.println(i);
                          //System.out.println(nextNode.currentPosition.lat +","+ nextNode.currentPosition.lng);
@@ -114,16 +141,28 @@ public class PathFinder {
                }
           }
 
-          public ArrayList<LongLat> getPath(){
-               Node node = this.previousNode;
-               ArrayList<LongLat> traversedPath = new ArrayList<LongLat>();
+          public void constructPath(){
+               Node node = this;
+               angleList = new ArrayList<>();
+               traversedPath = new ArrayList<>();
                traversedPath.add(currentPosition);
+               angleList.add(previousAngle);
                while (node.previousNode!=null){
                     node = node.previousNode;
                     traversedPath.add(node.currentPosition);
+                    angleList.add(node.previousAngle);
                }
                Collections.reverse(traversedPath);
+               Collections.reverse(angleList);
+               angleList.remove(0);
+          }
+
+          public ArrayList<LongLat> getPath(){
                return traversedPath;
+          }
+
+          public ArrayList<Integer> getAngleList(){
+               return angleList;
           }
 
           public ArrayList<LongLat> optimizePath(LongLat start, ArrayList<LongLat> path){
