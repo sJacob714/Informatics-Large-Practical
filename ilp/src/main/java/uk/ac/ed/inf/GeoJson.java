@@ -4,6 +4,8 @@ import com.mapbox.geojson.*;
 
 import java.awt.geom.Line2D;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 
 import java.net.ConnectException;
@@ -15,21 +17,42 @@ import java.net.http.HttpResponse;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Locations {
+public class GeoJson {
     private static final HttpClient client = HttpClient.newHttpClient();
     private FeatureCollection landmarks;
     private NoFlyZone noFlyZone;
     public String machineName;
     public String port;
 
-    public Locations(String machineName, String port) {
+    public GeoJson(String machineName, String port) {
         this.machineName = machineName;
         this.port = port;
         //getLandmarks();
         //getNoFlyZone();
     }
 
-    /**
+    public void writeToGeoJson(ArrayList<LongLat> flightPath, String fileName) {
+        List<Point> points = new ArrayList<>();
+        for (int i = 0; i < flightPath.size() - 1; i++) {
+            points.add(Point.fromLngLat(flightPath.get(i).lng, flightPath.get(i).lat));
+        }
+        Geometry geometry = (Geometry) LineString.fromLngLats(points);
+        Feature feature = Feature.fromGeometry(geometry);
+        FeatureCollection featureCollection = FeatureCollection.fromFeature(feature);
+        String jsonString = featureCollection.toJson();
+
+        try {
+            File file = new File(fileName);
+            file.createNewFile();
+            FileWriter writer = new FileWriter(fileName, false);
+            writer.write(jsonString);
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+        /**
      * Gets landmarks from server and parses it in
      *
      */

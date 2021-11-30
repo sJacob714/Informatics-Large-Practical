@@ -23,7 +23,7 @@ public class runCode {
 
     @Test
     public void checkLocations() {
-        Locations location = new Locations("localhost", "9898");
+        GeoJson location = new GeoJson("localhost", "9898");
         NoFlyZone noFlyZone = location.getNoFlyZone();
 
         LongLat start = new LongLat(-3.1881, 	55.9448);
@@ -104,7 +104,7 @@ public class runCode {
         LongLat start = new LongLat(-3.1914,55.9430);
         LongLat end = new LongLat(-3.1847,55.9431);
         LongLat end2 = new LongLat(-3.1847, 55.9461);
-        Locations location = new Locations("localhost", "9898");
+        GeoJson location = new GeoJson("localhost", "9898");
         NoFlyZone noFlyZone = location.getNoFlyZone();
         ArrayList<LongLat> path;
         ArrayList<Integer> angleList;
@@ -146,7 +146,7 @@ public class runCode {
         System.out.println();
 
 
-        location = new Locations("localhost", "9898");
+        location = new GeoJson("localhost", "9898");
         noFlyZone = location.getNoFlyZone();
         pathFinder = new PathFinder(noFlyZone);
 
@@ -231,13 +231,14 @@ public class runCode {
     public void checkDrone(){
         What3WordsConverter converter = new What3WordsConverter("localhost", "9898");
         Menus menus = new Menus("localhost","9898");
-        String date = "2022-05-14";
-        //date = "2023-12-31";
-        date = "2022-01-01";
+        String date = "2022-01-01";
+        date = "2022-05-14";
+        date = "2023-12-31";
+        date = "2023-12-27";
         Database database = new Database("localhost", "1527");
         ArrayList<Order> orders = database.getOrders(date, converter, menus);
 
-        Locations location = new Locations("localhost", "9898");
+        GeoJson location = new GeoJson("localhost", "9898");
         NoFlyZone noFlyZone = location.getNoFlyZone();
 
         Drone drone = new Drone(orders,noFlyZone);
@@ -246,8 +247,7 @@ public class runCode {
         ArrayList<LongLat> flightPath = drone.getOverallFlightPath();
         ArrayList<Integer> angleList = drone.getOverallAngleList();
 
-        System.out.println("Orders not delivered: "+drone.orders.size());
-        System.out.println(flightPath.size());
+        System.out.println("Path size: "+flightPath.size());
         System.out.print("[");
         for (LongLat x: flightPath){
             if (x.closeTo(drone.appleton)){
@@ -256,13 +256,13 @@ public class runCode {
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();
-        System.out.println(angleList.size());
+        System.out.println("Angle Size: " +angleList.size());
         for (int x: angleList){
             System.out.print(x+" ");
         }
 
         for (int i = 0; i<flightPath.size()-1; i++){
-            if (flightPath.get(i).distanceTo(flightPath.get(i+1))>0.00016) {
+            if (flightPath.get(i).distanceTo(flightPath.get(i+1))>0.00015001) {
                 System.out.println(flightPath.get(i).distanceTo(flightPath.get(i + 1)));
             }
         }

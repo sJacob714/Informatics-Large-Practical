@@ -2,10 +2,13 @@ package uk.ac.ed.inf;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class Drone {
     public int battery;
     public ArrayList<Order> orders;
+    public ArrayList<Order> deliveredOrders = new ArrayList<>();
     //public Menus menus;
     public PathFinder pathFinder;
     public LongLat currentPosition;
@@ -20,6 +23,7 @@ public class Drone {
 
     public ArrayList<LongLat> overallFlightPath = new ArrayList<>();
     public ArrayList<Integer> overallAngleList = new ArrayList<>();
+    public ArrayList<String> overallOrdersList = new ArrayList<>();
     public final LongLat appleton = new LongLat(-3.186874, 55.944494);
 
     public Drone(ArrayList<Order> orders, NoFlyZone noFlyZone/*, Menus menus*/){
@@ -29,7 +33,10 @@ public class Drone {
         pathFinder = new PathFinder(noFlyZone);
         currentPosition = appleton;
 
-
+        totalValue = 0;
+        for (Order order: this.orders){
+            totalValue+=order.deliveryCost;
+        }
         totalNumberOfOrders = orders.size();
     }
 
@@ -42,6 +49,7 @@ public class Drone {
         while(continueJourney){
             possiblePath = new ArrayList<>();
             possibleAngles = new ArrayList<>();
+            System.out.println(nextOrder.destinationOrder.size());
             for (LongLat destination: nextOrder.destinationOrder){
                 if (possiblePath.size()==0){
                     pathFinder.createPath(currentPosition, destination);
@@ -51,37 +59,17 @@ public class Drone {
                 }
                 possiblePath.addAll(pathFinder.getPath());
                 possibleAngles.addAll(pathFinder.getAngleList());
+                System.out.println(pathFinder.getPath().size() + " " + pathFinder.getAngleList().size());
                 //possiblePath.add(possiblePath.get(possiblePath.size()-1));
                 possibleAngles.add(-999);
                 //possibleCurrentPosition = possiblePath.get(possiblePath.size()-1);
             }
-            /*
-            pathFinder.createPath(possibleCurrentPosition, nextOrderClosestShop);
-            possiblePath.addAll(pathFinder.getPath());
-            possibleAngles.addAll(pathFinder.getAngleList());
-            possiblePath.add(possiblePath.get(possiblePath.size()-1));
-            possibleAngles.add(-999);
-            possibleCurrentPosition = possiblePath.get(possiblePath.size()-1);
-
-            pathFinder.createPath(possibleCurrentPosition, nextOrderLastShop);
-            possiblePath.addAll(pathFinder.getPath());
-            possibleAngles.addAll(pathFinder.getAngleList());
-            possiblePath.add(possiblePath.get(possiblePath.size()-1));
-            possibleAngles.add(-999);
-            possibleCurrentPosition = possiblePath.get(possiblePath.size()-1);
-
-            pathFinder.createPath(possibleCurrentPosition, nextOrder.deliverTo);
-            possiblePath.addAll(pathFinder.getPath());
-            possibleAngles.addAll(pathFinder.getAngleList());
-            possiblePath.add(possiblePath.get(possiblePath.size()-1));
-            possibleAngles.add(-999);
-            possibleCurrentPosition = possiblePath.get(possiblePath.size()-1);
-             */
 
             pathFinder.createPath(possiblePath.get(possiblePath.size()-1), appleton);
             System.out.println(possiblePath.size());
 
             if ((possibleAngles.size()+pathFinder.getAngleList().size())<battery){
+                deliveredOrders.add(nextOrder);
                 numberOfOrdersDelivered++;
                 valueDelivered+=nextOrder.deliveryCost;
                 //System.out.println("Can Travel");
@@ -89,8 +77,11 @@ public class Drone {
                 currentPosition = possiblePath.get(possiblePath.size()-1);
                 overallFlightPath.addAll(possiblePath);
                 overallAngleList.addAll(possibleAngles);
+                overallOrdersList.addAll(Collections.nCopies(possibleAngles.size(),nextOrder.orderNo));
                 battery -= possibleAngles.size();
                 System.out.println("battery Remaining:"+battery);
+                System.out.println("Current path size: " +overallFlightPath.size());
+                System.out.println("Current angle size: " +overallAngleList.size());
             }
             else{
                 //System.out.println("Miss order");
@@ -100,9 +91,20 @@ public class Drone {
                 continueJourney=false;
             }
         }
+        System.out.println();
+        System.out.println();
+        System.out.println("Orders Delivered: " +numberOfOrdersDelivered+ ", Total Orders: " +totalNumberOfOrders);
+        System.out.println("Order Ratio: " + (numberOfOrdersDelivered/(double)totalNumberOfOrders));
+        System.out.println("Value Delivered: " +valueDelivered+ ", Total Value: " +totalValue);
+        System.out.println("Value Ratio: " + (valueDelivered/(double)totalValue));
+
         pathFinder.createPath(currentPosition, appleton);
         overallFlightPath.addAll(pathFinder.getPath());
         overallAngleList.addAll(pathFinder.getAngleList());
+        overallOrdersList.addAll(Collections.nCopies(pathFinder.getAngleList().size(), "ReturnAT"));
+        battery-=pathFinder.getAngleList().size();
+        System.out.println("battery Remaining:"+battery+ "   path: " + overallFlightPath.size());
+        System.out.println();
     }
 
     public ArrayList<LongLat> getOverallFlightPath(){
@@ -111,6 +113,14 @@ public class Drone {
 
     public ArrayList<Integer> getOverallAngleList(){
         return overallAngleList;
+    }
+
+    public ArrayList<Order> getDeliveredOrders(){
+        return deliveredOrders;
+    }
+
+    public ArrayList<String> getOverallOrdersList(){
+        return overallOrdersList;
     }
 
     public void chooseNextBestOrder(){

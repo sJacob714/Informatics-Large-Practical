@@ -11,6 +11,7 @@ public class Order {
     public String deliveryDate;
     public String customer;
     public LongLat deliverTo;
+    public String words;
     public int deliveryCost;
     public ArrayList<LongLat> shopCoordinates;
     public ArrayList<String> orderItems = new ArrayList<>();
@@ -22,12 +23,13 @@ public class Order {
         deliveryDate = orderResults.getString("deliveryDate");
         customer = orderResults.getString("customer");
 
-        What3Word word;
+        words = orderResults.getString("deliverTo");
+        What3Word what3Word;
         double centreLng;
         double centreLat;
-        word = converter.convert(orderResults.getString("deliverTo"));
-        centreLng = (word.square.northeast.lng + word.square.southwest.lng)/2;
-        centreLat = (word.square.northeast.lat + word.square.southwest.lat)/2;
+        what3Word = converter.convert(words);
+        centreLng = (what3Word.square.northeast.lng + what3Word.square.southwest.lng)/2;
+        centreLat = (what3Word.square.northeast.lat + what3Word.square.southwest.lat)/2;
         deliverTo = new LongLat(centreLng, centreLat);
 
         String query = "select * from orderDetails where orderNo=(?)";

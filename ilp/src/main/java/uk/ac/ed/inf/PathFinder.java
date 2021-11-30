@@ -17,6 +17,7 @@ public class PathFinder {
 
      public void createPath(LongLat start, LongLat end){
           path = new ArrayList<>();
+          angleList = new ArrayList<>();
           if (start.closeTo(end)){
                path.add(start);
                return;
@@ -62,36 +63,12 @@ public class PathFinder {
                this.frontier = frontier;
                this.visitedLocations = visitedLocations;
                this.previousAngle = previousAngle;
-               /*
-               if (previousNode==null){
-                    this.distanceTravelled = 0;
-               }
-               else{
-                    this.distanceTravelled += 0.00015;
-               }
-                */
-
-               //this.visitedLocations.add(currentPosition);
           }
 
           @Override
           public int compareTo(Node node){
-               double score1 = /*(this.visitedLocations.size()*0.00015) + */ /*this.distanceTravelled + */this.currentPosition.distanceTo(this.end);
-               double score2 = /*(node.visitedLocations.size()*0.00015) + */ /*node.distanceTravelled + */node.currentPosition.distanceTo(node.end);
-
-               /*
-               double lineLng = this.currentPosition.lng + (this.currentPosition.lng-this.previousNode.currentPosition.lng)*1000;
-               double lineLat = this.currentPosition.lat + (this.currentPosition.lat-this.previousNode.currentPosition.lat)*1000;
-               if (noFlyZone.outOfNoFlyCheck(this.currentPosition, new LongLat(lineLng, lineLat))){
-                    score1+=100000;
-               }
-               lineLng = node.currentPosition.lng + (node.currentPosition.lng-node.previousNode.currentPosition.lng)*1000;
-               lineLat = node.currentPosition.lat + (node.currentPosition.lat-node.previousNode.currentPosition.lat)*1000;
-               if (noFlyZone.outOfNoFlyCheck(node.currentPosition, new LongLat(lineLng, lineLat))){
-                    score2+=100000;
-               }
-                */
-
+               double score1 = this.currentPosition.distanceTo(this.end);
+               double score2 = node.currentPosition.distanceTo(node.end);
                return (int)((score1-score2)*1000000000);
           }
 
@@ -108,10 +85,6 @@ public class PathFinder {
                     if (nextNode.currentPosition.closeTo(end)){
                          //System.out.println("FOUND FOUND FOUND FOUND FOUND FOUND");
                          return nextNode;
-                         //ArrayList<LongLat> found = new ArrayList<>();
-                         //found.add(nextNode.currentPosition);
-                         //found.add(this.currentPosition);
-                         //return found;
                     }
                     nextNode.getNextPositions();
                     returnedNode = nextNode.traverseFrontier();
