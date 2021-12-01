@@ -28,10 +28,10 @@ public class Drone {
 
     /**
      * Constructor for Drone Class
-     * Sets battery to inital value of 1500 and stores other required attributes
+     * Sets battery to initial value of 1500 and stores other required attributes
      *
-     * @param orders
-     * @param noFlyZone
+     * @param orders orders to be fulfilled
+     * @param noFlyZone noFlyZone drone cannot enter
      */
     public Drone(ArrayList<Order> orders, NoFlyZone noFlyZone){
         battery = 1500;

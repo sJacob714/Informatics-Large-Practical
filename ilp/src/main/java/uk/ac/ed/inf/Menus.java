@@ -7,7 +7,6 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import com.google.gson.Gson;
@@ -80,11 +79,8 @@ public class Menus {
         // initial cost is 50 as standard delivery charge is 50p
         int totalCost = 50;
 
-        // Converts input into a List
-        List<String> searchList = Arrays.asList(items);
-
-        // Goes through every item in searchList
-        for (String search: searchList) {
+        // Goes through every item to be found
+        for (String search: items) {
             // Iterates through every item in every menu
             menuSearch:
             for (Shop shops : ShopsList) {
@@ -106,7 +102,7 @@ public class Menus {
      * For every item requested, iterates through menus until item name is found
      * and then adds shop coordinates to list of coordinates.
      *
-     * @param converter Used to convert What3Word to useable formats
+     * @param converter Used to convert What3Word to usable formats
      * @param items variable number of items that are to be delivered
      * @return list of shop coordinates that need to be visited
      */
@@ -119,11 +115,8 @@ public class Menus {
         double centreLat;
         What3Word word;
 
-        // Converts input into a List
-        List<String> searchList = Arrays.asList(items);
-
-        // Goes through every item in searchList
-        for (String search: searchList) {
+        // Goes through every item to be found
+        for (String search: items) {
             // Iterates through every item in every menu
             menuSearch:
             for (Shop shop : ShopsList) {

@@ -11,7 +11,7 @@ public class App {
     public static void main( String[] args ) {
         String machineName = "localhost";
 
-        //Formats dates if neededd
+        //Format dates if needed
         if (args[0].length()==1){
             args[0] = "0"+args[0];
         }

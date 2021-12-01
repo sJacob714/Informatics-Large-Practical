@@ -2,7 +2,6 @@ package uk.ac.ed.inf;
 
 import com.mapbox.geojson.*;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -20,8 +19,6 @@ import java.util.List;
  */
 public class GeoJson {
     private static final HttpClient client = HttpClient.newHttpClient();
-    private FeatureCollection landmarks;
-    //private NoFlyZone noFlyZone;
     private final String machineName;
     private final String port;
 
@@ -99,16 +96,12 @@ public class GeoJson {
         FeatureCollection featureCollection = FeatureCollection.fromFeature(feature);
         String jsonString = featureCollection.toJson();
 
-        // tries to create new file and write to it
         try {
-            File file = new File(fileName);
-            file.createNewFile();
-            System.out.println("Created file: " +fileName);
             // does not append to any existing file, instead overwrites
             FileWriter writer = new FileWriter(fileName, false);
             writer.write(jsonString);
             writer.close();
-            System.out.println("Written to " +fileName);
+            System.out.println("Created and Written to " +fileName);
             System.out.println();
         } catch (IOException e) {
             e.printStackTrace();

@@ -97,7 +97,7 @@ public class Database {
                             "deliveredTo varchar(19),"+
                             "costInPence int)");
             System.out.println("Created deliveries table");
-            // inserts details of every delivered order into the deliveries table
+            // insert details of every delivered order into the deliveries table
             psQuery = conn.prepareStatement(
                     "insert into deliveries values (?, ?, ?)");
             for (Order order : deliveredOrders){
@@ -119,7 +119,7 @@ public class Database {
                             "toLongitude double,"+
                             "toLatitude double)");
             System.out.println("Created flightpath table");
-            //inserts details of every move made by the drone when delivering
+            //insert details of every move made by the drone when delivering
             psQuery = conn.prepareStatement(
                     "insert into flightpath values (?, ?, ?, ?, ?, ?)");
             for (int i = 0; i<angleList.size(); i++) {
