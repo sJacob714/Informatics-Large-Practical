@@ -7,43 +7,58 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class Order {
-    public String orderNo;
-    public String deliveryDate;
-    public String customer;
-    public LongLat deliverTo;
-    public String words;
-    public int deliveryCost;
-    public ArrayList<LongLat> shopCoordinates;
-    public ArrayList<String> orderItems = new ArrayList<>();
-    public double distanceBetweenShops=0;
+    public final String orderNo;
+    public final LongLat deliverTo;
+    public final String words;
+    public final int deliveryCost;
+    public final ArrayList<LongLat> shopCoordinates;
+    public final ArrayList<String> orderItems = new ArrayList<>();
+    public final double distanceBetweenShops;
     public ArrayList<LongLat> destinationOrder;
 
-    public Order(ResultSet orderResults, Connection conn, What3WordsConverter converter, Menus menus) throws SQLException {
-        orderNo = orderResults.getString("orderNo");
-        deliveryDate = orderResults.getString("deliveryDate");
-        customer = orderResults.getString("customer");
-
-        words = orderResults.getString("deliverTo");
+    /**
+     * Constructor for class
+     * Uses result set from order table in database to get basic information on orders.
+     * Sends query for orderDetails table in database to get rest of the data needed.
+     * Uses these to create needed variables.
+     *
+     * @param orderResults order information from the order table in the database
+     * @param conn connection to derby database
+     * @param converter used to convert What3Words
+     * @param menus has all details on menu items
+     * @throws SQLException if it fails to connect to the database
+     */
+    public Order(ResultSet orderResults, Connection conn,
+                 What3WordsConverter converter, Menus menus) throws SQLException {
         What3Word what3Word;
         double centreLng;
         double centreLat;
+        orderNo = orderResults.getString("orderNo");
+
+        //gets information from What3Words, find centre of square and saves into deliverTo variable
+        words = orderResults.getString("deliverTo");
         what3Word = converter.convert(words);
         centreLng = (what3Word.square.northeast.lng + what3Word.square.southwest.lng)/2;
         centreLat = (what3Word.square.northeast.lat + what3Word.square.southwest.lat)/2;
         deliverTo = new LongLat(centreLng, centreLat);
 
+        //Queries database for orderDetails and saves into orderItems list
         String query = "select * from orderDetails where orderNo=(?)";
         PreparedStatement psQuery = conn.prepareStatement(query);
         psQuery.setString(1, orderNo);
-
         ResultSet orderDetailsResults = psQuery.executeQuery();
         while (orderDetailsResults.next()){
             orderItems.add(orderDetailsResults.getString("item"));
         }
+
+        //Gets delivery cost, shop coordinates and distance between shops if there are two
         deliveryCost = menus.getDeliveryCost(orderItems.toArray(new String[0]));
-        shopCoordinates = menus.getCoordinates(converter, orderItems.toArray(new String[0]));
-        for (int i =0; i<shopCoordinates.size()-1; i++) {
-            distanceBetweenShops += shopCoordinates.get(i).distanceTo(shopCoordinates.get(i+1));
+        shopCoordinates = menus.getShopCoordinates(converter, orderItems.toArray(new String[0]));
+        if (shopCoordinates.size()==2){
+            distanceBetweenShops = shopCoordinates.get(0).distanceTo(shopCoordinates.get(1));
+        }
+        else{
+            distanceBetweenShops = 0;
         }
     }
 }

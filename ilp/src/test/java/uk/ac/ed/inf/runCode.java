@@ -28,19 +28,19 @@ public class runCode {
 
         LongLat start = new LongLat(-3.1881, 	55.9448);
         LongLat end = new LongLat(-3.1880, 55.9446);
-        assertFalse(noFlyZone.outOfNoFlyCheck(start,end));
+        assertFalse(noFlyZone.staysOutOfNoFly(start,end));
 
         start = new LongLat(-3.1881, 	55.9448);
         end = new LongLat(-3.1880, 	55.9445);
-        assertFalse(noFlyZone.outOfNoFlyCheck(start,end));
+        assertFalse(noFlyZone.staysOutOfNoFly(start,end));
 
         start = new LongLat(-3.1889, 	55.9454);
         end = new LongLat(-3.1885, 	55.9455);
-        assertTrue(noFlyZone.outOfNoFlyCheck(start,end));
+        assertTrue(noFlyZone.staysOutOfNoFly(start,end));
 
         start = new LongLat(-3.1892, 	55.9445);
         end = new LongLat(-3.1890, 	55.9445);
-        assertTrue(noFlyZone.outOfNoFlyCheck(start,end));
+        assertTrue(noFlyZone.staysOutOfNoFly(start,end));
 
         start = new LongLat(-3.1889, 	55.9447);
         end = new LongLat(-3.1890, 	55.9448);
@@ -55,7 +55,7 @@ public class runCode {
         Database database = new Database("localhost", "1527");
         ArrayList<Order> orders = database.getOrders(date, converter, menus);
         for (int i = 0; i<orders.size(); i++){
-            System.out.println(orders.get(i).orderNo +" "+ orders.get(i).deliveryDate +" "+ orders.get(i).customer +" "+ orders.get(i).deliverTo.lng +" "+ orders.get(i).deliverTo.lat +" "+ orders.get(i).deliveryCost);
+            //System.out.println(orders.get(i).orderNo +" "+ orders.get(i).deliveryDate +" "+ orders.get(i).customer +" "+ orders.get(i).deliverTo.lng +" "+ orders.get(i).deliverTo.lat +" "+ orders.get(i).deliveryCost);
             for (int j = 0; j<orders.get(i).orderItems.size(); j++){
                 System.out.print(orders.get(i).orderItems.get(j)+"     ");
             }
@@ -109,7 +109,7 @@ public class runCode {
         ArrayList<LongLat> path;
         ArrayList<Integer> angleList;
 
-        noFlyZone.setNoFlyPerimeter(new ArrayList<>());
+        //noFlyZone.setNoFlyPerimeter(new ArrayList<>());
         PathFinder pathFinder = new PathFinder(noFlyZone);
 
         pathFinder.createPath(start, end);
@@ -242,7 +242,7 @@ public class runCode {
         NoFlyZone noFlyZone = location.getNoFlyZone();
 
         Drone drone = new Drone(orders,noFlyZone);
-        System.out.println("Total Number of orders: "+drone.orders.size());
+        //System.out.println("Total Number of orders: "+drone.orders.size());
         drone.createFlightPath();
         ArrayList<LongLat> flightPath = drone.getOverallFlightPath();
         ArrayList<Integer> angleList = drone.getOverallAngleList();
@@ -250,9 +250,9 @@ public class runCode {
         System.out.println("Path size: "+flightPath.size());
         System.out.print("[");
         for (LongLat x: flightPath){
-            if (x.closeTo(drone.appleton)){
+            //if (x.closeTo(drone.appleton)){
                 //System.out.print("APPLETON");
-            }
+            //}
             System.out.print("["+ x.lng +","+ x.lat +"]"+",");
         }
         System.out.println();

@@ -3,12 +3,22 @@ package uk.ac.ed.inf;
 import java.sql.*;
 import java.util.ArrayList;
 
+/**
+ * Used to access Derby database
+ */
 public class Database {
-    public String query;
-    public Connection conn = null;
-    Statement statement;
-    PreparedStatement psQuery = null;
+    private Connection conn = null;
+    private Statement statement;
+    private PreparedStatement psQuery = null;
 
+    /**
+     * Class constructor for Database Object.
+     * Creates connection to derby database by creating a jdbc String.
+     * Creates a Statement object to run SQL statement commands against database.
+     *
+     * @param machineName name of machine to connect to
+     * @param port port where database is running
+     */
     public Database(String machineName, String port){
         String jdbcString;
         jdbcString = "jdbc:derby://" +machineName+ ":" +port+ "/derbyDB";
@@ -21,38 +31,58 @@ public class Database {
 
     }
 
+    /**
+     * Queries the database for the orders and orderDetails of required date.
+     * Parses in all orders for this date and their details into a ArrayList of Order types.
+     *
+     * @param date delivery date of orders that need to be queried from database
+     * @param converter Used to parse What3Words into a usable format, get LongLat coordinates
+     * @param menus Used to get delivery cost and get shop coordinates
+     * @return list of orders that need to be delivered on requested date.
+     */
     public ArrayList<Order> getOrders(String date, What3WordsConverter converter, Menus menus){
-        ArrayList<Order> orders = new ArrayList<>();
+        ArrayList<Order> ordersList = new ArrayList<>();
         try {
-            query = "select * from orders where deliveryDate=(?)";
+            // Queries database for every order that needs to be delivered on the requested date
+            String query = "select * from orders where deliveryDate=(?)";
             psQuery = conn.prepareStatement(query);
             psQuery.setString(1, date);
-
             ResultSet orderResults = psQuery.executeQuery();
-            ResultSet orderDetailsResults;
 
+            // Creates a new Order instance for every order from database and adds it to ordersList
             Order order;
             while (orderResults.next()){
                 order = new Order(orderResults, conn, converter, menus);
-                orders.add(order);
+                ordersList.add(order);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return orders;
+        return ordersList;
     }
 
-    public void writeToDatabase(ArrayList<Order> deliveredOrders, ArrayList<LongLat> flightPath, ArrayList<Integer> angleList, ArrayList<String> orderList){
+    /**
+     * Creates a deliveries and flightpath table in the database.
+     * Fills deliveries table with details on every order that was delivered.
+     * Fills flightpath table with details on every move taken by the drone.
+     *
+     * @param deliveredOrders all orders that had been delivered by the drone
+     * @param flightPath the path the drone took to deliver the orders
+     * @param angleList list of all the angles that the drone took to move from each coordinate to the next
+     * @param orderList list of what order was being fulfilled for each move the drone took
+     */
+    public void writeToDatabase(ArrayList<Order> deliveredOrders, ArrayList<LongLat> flightPath,
+                                ArrayList<Integer> angleList, ArrayList<String> orderList){
         try {
-            //Checks if deliveries table already exists and deletes if deliveries exists
+            //Checks if deliveries table already exists and deletes if it exists
             DatabaseMetaData databaseMetaData = conn.getMetaData();
             ResultSet resultSet =
                     databaseMetaData.getTables(null, null, "DELIVERIES", null);
             if (resultSet.next()){
                 statement.execute("drop table deliveries");
             }
-            //Checks if flightpath table already exists and deletes if flightpath exists
+            //Checks if flightpath table already exists and deletes if it exists
             databaseMetaData = conn.getMetaData();
             resultSet =
                     databaseMetaData.getTables(null, null, "FLIGHTPATH", null);
@@ -60,12 +90,14 @@ public class Database {
                 statement.execute("drop table flightpath");
             }
 
-
+            //Creates deliveries table
             statement.execute(
                     "create table deliveries("+
                             "orderNo char(8),"+
                             "deliveredTo varchar(19),"+
                             "costInPence int)");
+            System.out.println("Created deliveries table");
+            // inserts details of every delivered order into the deliveries table
             psQuery = conn.prepareStatement(
                     "insert into deliveries values (?, ?, ?)");
             for (Order order : deliveredOrders){
@@ -74,7 +106,10 @@ public class Database {
                 psQuery.setInt(3, order.deliveryCost);
                 psQuery.execute();
             }
+            System.out.println("Inserted data into deliveries table");
+            System.out.println();
 
+            //Creates flightpath table
             statement.execute(
                     "create table flightpath("+
                             "orderNo char(8),"+
@@ -83,6 +118,8 @@ public class Database {
                             "angle int,"+
                             "toLongitude double,"+
                             "toLatitude double)");
+            System.out.println("Created flightpath table");
+            //inserts details of every move made by the drone when delivering
             psQuery = conn.prepareStatement(
                     "insert into flightpath values (?, ?, ?, ?, ?, ?)");
             for (int i = 0; i<angleList.size(); i++) {
@@ -90,10 +127,13 @@ public class Database {
                 psQuery.setDouble(2, flightPath.get(i).lng);
                 psQuery.setDouble(3, flightPath.get(i).lat);
                 psQuery.setInt(4, angleList.get(i));
+                //flightPath array should be one bigger than angleList and orderList array
                 psQuery.setDouble(5, flightPath.get(i+1).lng);
                 psQuery.setDouble(6, flightPath.get(i+1).lat);
                 psQuery.execute();
             }
+            System.out.println("Inserted data into flightpath table");
+
         } catch (SQLException e) {
             e.printStackTrace();
         }

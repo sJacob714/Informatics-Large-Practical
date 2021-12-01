@@ -3,36 +3,43 @@ package uk.ac.ed.inf;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.List;
 
 public class Drone {
-    public int battery;
-    public ArrayList<Order> orders;
-    public ArrayList<Order> deliveredOrders = new ArrayList<>();
-    //public Menus menus;
-    public PathFinder pathFinder;
-    public LongLat currentPosition;
+    private int battery;
+    private final ArrayList<Order> orders;
+    private final ArrayList<Order> deliveredOrders = new ArrayList<>();
+    private final PathFinder pathFinder;
+    private LongLat currentPosition;
 
     //For statistics
-    public int totalValue;
-    public int valueDelivered;
-    public int totalNumberOfOrders;
-    public int numberOfOrdersDelivered;
+    private int totalValue;
+    private int valueDelivered;
+    private final int totalNumberOfOrders;
+    private int numberOfOrdersDelivered;
 
-    public Order nextOrder;
+    private Order nextOrder;
 
-    public ArrayList<LongLat> overallFlightPath = new ArrayList<>();
-    public ArrayList<Integer> overallAngleList = new ArrayList<>();
-    public ArrayList<String> overallOrdersList = new ArrayList<>();
-    public final LongLat appleton = new LongLat(-3.186874, 55.944494);
+    //Needed for final outputs
+    private final ArrayList<LongLat> overallFlightPath = new ArrayList<>();
+    private final ArrayList<Integer> overallAngleList = new ArrayList<>();
+    private final ArrayList<String> overallOrdersList = new ArrayList<>();
 
-    public Drone(ArrayList<Order> orders, NoFlyZone noFlyZone/*, Menus menus*/){
+    private final LongLat appleton = new LongLat(-3.186874, 55.944494);
+
+    /**
+     * Constructor for Drone Class
+     * Sets battery to inital value of 1500 and stores other required attributes
+     *
+     * @param orders
+     * @param noFlyZone
+     */
+    public Drone(ArrayList<Order> orders, NoFlyZone noFlyZone){
         battery = 1500;
         this.orders = orders;
-        //this.menus = menus;
         pathFinder = new PathFinder(noFlyZone);
         currentPosition = appleton;
 
+        //Finds total value of all the orders
         totalValue = 0;
         for (Order order: this.orders){
             totalValue+=order.deliveryCost;
@@ -40,17 +47,29 @@ public class Drone {
         totalNumberOfOrders = orders.size();
     }
 
+    /**
+     * Finds flight path for drone to take.
+     *
+     * Gets roughly the next best order to deliver.
+     * Finds path to go to each shop of the order and delivery location,
+     * If the battery needed to make this order and return to appleton are less than batter remaining:
+     *      add the path and the angles to the overall path and angle list
+     * move on to the next best order and repeat
+     */
     public void createFlightPath(){
         ArrayList<LongLat> possiblePath;
         ArrayList<Integer> possibleAngles;
-        //LongLat possibleCurrentPosition = currentPosition;
-        boolean continueJourney = true;
+
         chooseNextBestOrder();
-        while(continueJourney){
+        //Until there are no orders remaining
+        while(nextOrder!=null){
             possiblePath = new ArrayList<>();
             possibleAngles = new ArrayList<>();
-            System.out.println(nextOrder.destinationOrder.size());
+
+            // for each location that need to be travelled to for the order
             for (LongLat destination: nextOrder.destinationOrder){
+                // if possiblePath is size 0, pathfinder should start from current position,
+                // else pathfinder should start from the last coordinate in possible path
                 if (possiblePath.size()==0){
                     pathFinder.createPath(currentPosition, destination);
                 }
@@ -59,53 +78,103 @@ public class Drone {
                 }
                 possiblePath.addAll(pathFinder.getPath());
                 possibleAngles.addAll(pathFinder.getAngleList());
-                System.out.println(pathFinder.getPath().size() + " " + pathFinder.getAngleList().size());
-                //possiblePath.add(possiblePath.get(possiblePath.size()-1));
+                //add angle of -999 as drone needs to hover to pickup/deliver
                 possibleAngles.add(-999);
-                //possibleCurrentPosition = possiblePath.get(possiblePath.size()-1);
             }
 
+            //Check if battery usage needed to make order and return to appleton is greater than battery remaining
             pathFinder.createPath(possiblePath.get(possiblePath.size()-1), appleton);
-            System.out.println(possiblePath.size());
-
-            if ((possibleAngles.size()+pathFinder.getAngleList().size())<battery){
+            if ((possibleAngles.size() + pathFinder.getAngleList().size()) < battery){
+                // for statistics
                 deliveredOrders.add(nextOrder);
                 numberOfOrdersDelivered++;
-                valueDelivered+=nextOrder.deliveryCost;
-                //System.out.println("Can Travel");
-                //currentPosition = new LongLat(possiblePath.get(possiblePath.size()-1).lng, possiblePath.get(possiblePath.size()-1).lat);
+                valueDelivered += nextOrder.deliveryCost;
+
+                // update current position, lists and battery
                 currentPosition = possiblePath.get(possiblePath.size()-1);
                 overallFlightPath.addAll(possiblePath);
                 overallAngleList.addAll(possibleAngles);
                 overallOrdersList.addAll(Collections.nCopies(possibleAngles.size(),nextOrder.orderNo));
                 battery -= possibleAngles.size();
-                System.out.println("battery Remaining:"+battery);
+
+                System.out.println("Battery Remaining: "+battery);
                 System.out.println("Current path size: " +overallFlightPath.size());
                 System.out.println("Current angle size: " +overallAngleList.size());
-            }
-            else{
-                //System.out.println("Miss order");
+                System.out.println();
             }
             chooseNextBestOrder();
-            if (nextOrder==null){
-                continueJourney=false;
-            }
         }
-        System.out.println();
-        System.out.println();
-        System.out.println("Orders Delivered: " +numberOfOrdersDelivered+ ", Total Orders: " +totalNumberOfOrders);
-        System.out.println("Order Ratio: " + (numberOfOrdersDelivered/(double)totalNumberOfOrders));
-        System.out.println("Value Delivered: " +valueDelivered+ ", Total Value: " +totalValue);
-        System.out.println("Value Ratio: " + (valueDelivered/(double)totalValue));
 
+        System.out.println("Orders Delivered: " +numberOfOrdersDelivered+ ", Total Orders: " +totalNumberOfOrders);
+        System.out.println("Order Ratio: " + (numberOfOrdersDelivered/(double)totalNumberOfOrders)*100+" %");
+        System.out.println("Value Delivered: " +valueDelivered+ ", Total Value: " +totalValue);
+        System.out.println("Value Ratio: " + (valueDelivered/(double)totalValue)*100+" %");
+
+        // Finds path to return to appleton and adds info to lists
         pathFinder.createPath(currentPosition, appleton);
+        currentPosition = overallFlightPath.get(overallFlightPath.size()-1);
         overallFlightPath.addAll(pathFinder.getPath());
         overallAngleList.addAll(pathFinder.getAngleList());
         overallOrdersList.addAll(Collections.nCopies(pathFinder.getAngleList().size(), "ReturnAT"));
-        battery-=pathFinder.getAngleList().size();
-        System.out.println("battery Remaining:"+battery+ "   path: " + overallFlightPath.size());
+        battery -= pathFinder.getAngleList().size();
+
         System.out.println();
+        System.out.println("Battery Remaining: "+battery);
     }
+
+    /**
+     * Estimates next best order to deliver to
+     *
+     * For every order:
+     * Checks if deliveryCost by distance needed to travel, is better than previously best order
+     * If it is, save order as best order
+     */
+    public void chooseNextBestOrder(){
+        double bestScore=0;
+        nextOrder = null;
+        LongLat lastShop;
+        LongLat closestShop;
+        LongLat nextOrderClosestShop;
+        LongLat nextOrderLastShop;
+        double batteryUsageEstimate;
+        double score;
+
+        for (Order order : orders) {
+
+            // sets closest and last shop to first element in shopCoordinates for if there's only one shop
+            closestShop = order.shopCoordinates.get(0);
+            lastShop = order.shopCoordinates.get(0);
+            // if there are two shops, orders shops based on what is closest to current position
+            if (order.shopCoordinates.size() == 2) {
+                lastShop = order.shopCoordinates.get(1);
+                if (currentPosition.distanceTo(order.shopCoordinates.get(1)) < currentPosition.distanceTo(closestShop)) {
+                    closestShop = order.shopCoordinates.get(1);
+                    lastShop = order.shopCoordinates.get(0);
+                }
+            }
+
+            //calculates score based on delivery cost by estimated battery usage
+            batteryUsageEstimate = Math.ceil((currentPosition.distanceTo(closestShop)
+                    + order.distanceBetweenShops + lastShop.distanceTo(order.deliverTo)) / 0.00015);
+            score = order.deliveryCost / batteryUsageEstimate;
+
+            //if score is better, updates best score and best order details
+            if (score > bestScore) {
+                bestScore = score;
+                nextOrderClosestShop = closestShop;
+                nextOrderLastShop = lastShop;
+                nextOrder = order;
+
+                // saves order of destinations to be used later when creating the flight path
+                if (nextOrder.shopCoordinates.size() == 2) {
+                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrderLastShop, nextOrder.deliverTo));
+                } else {
+                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrder.deliverTo));
+                }
+            }
+        }
+        orders.remove(nextOrder);
+        }
 
     public ArrayList<LongLat> getOverallFlightPath(){
         return overallFlightPath;
@@ -123,54 +192,5 @@ public class Drone {
         return overallOrdersList;
     }
 
-    public void chooseNextBestOrder(){
-        double bestScore=0;
-        nextOrder = null;
-        LongLat lastShop;
-        LongLat closestShop;
-        LongLat nextOrderClosestShop;
-        LongLat nextOrderLastShop;
-        //ArrayList<LongLat> tempShops;
-        double batteryUsageEstimate;
-        double score;
-
-        for (int i = 0; i<orders.size(); i++){
-            //tempShops = orders.get(i).shopCoordinates.clone();
-            closestShop = orders.get(i).shopCoordinates.get(0);
-            lastShop = orders.get(i).shopCoordinates.get(0);
-            if (orders.get(i).shopCoordinates.size()==2) {
-                lastShop = orders.get(i).shopCoordinates.get(1);
-                if (currentPosition.distanceTo(orders.get(i).shopCoordinates.get(1)) < currentPosition.distanceTo(closestShop)) {
-                    closestShop = orders.get(i).shopCoordinates.get(1);
-                    lastShop = orders.get(i).shopCoordinates.get(0);
-                }
-            }
-            //tempShops.remove(closestShop);
-            //lastShop = tempShops.get(0);
-            batteryUsageEstimate = Math.ceil((currentPosition.distanceTo(closestShop) + orders.get(i).distanceBetweenShops + lastShop.distanceTo(orders.get(i).deliverTo))/0.00015);
-            score = orders.get(i).deliveryCost/batteryUsageEstimate;
-            /*
-            batteryUsageEstimate += Math.ceil(orders.get(i).deliverTo.distanceTo(appleton)/0.00015);
-            if (batteryUsageEstimate>battery){
-                orders.remove(i);
-                i--;
-                continue;
-            }
-             */
-            if (score>bestScore){
-                bestScore = score;
-                nextOrderClosestShop = new LongLat(closestShop.lng, closestShop.lat);
-                nextOrderLastShop = new LongLat(lastShop.lng, lastShop.lat);
-                nextOrder = orders.get(i);
-                if (nextOrder.shopCoordinates.size()==2) {
-                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrderLastShop, nextOrder.deliverTo));
-                }
-                else{
-                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrder.deliverTo));
-                }
-            }
-        }
-        orders.remove(nextOrder);
-        }
 
 }
