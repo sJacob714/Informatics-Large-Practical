@@ -9,10 +9,13 @@ cd C:\Users\samue\Documents\Informatics\year 3\Informatics Large Practical\datab
 java -jar "%DERBY_HOME%"\lib\derbyrun.jar server start
 
 
+
 cd C:\Users\samue\Documents\Informatics\year 3\Informatics Large Practical\database
 
 java -jar "%DERBY_HOME%"\lib\derbyrun.jar ij
 
 connect 'jdbc:derby://localhost:1527/derbyDB';
 
-select * from TABLENAME;
+select * from deliveries;
+
+select * from flightpath;

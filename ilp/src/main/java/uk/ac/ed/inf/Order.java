@@ -31,16 +31,12 @@ public class Order {
     public Order(ResultSet orderResults, Connection conn,
                  What3WordsConverter converter, Menus menus) throws SQLException {
         What3Word what3Word;
-        double centreLng;
-        double centreLat;
         orderNo = orderResults.getString("orderNo");
 
         //gets information from What3Words, find centre of square and saves into deliverTo variable
         words = orderResults.getString("deliverTo");
         what3Word = converter.convert(words);
-        centreLng = (what3Word.square.northeast.lng + what3Word.square.southwest.lng)/2;
-        centreLat = (what3Word.square.northeast.lat + what3Word.square.southwest.lat)/2;
-        deliverTo = new LongLat(centreLng, centreLat);
+        deliverTo = what3Word.getCentreCoordinate();
 
         //Queries database for orderDetails and saves into orderItems list
         String query = "select * from orderDetails where orderNo=(?)";

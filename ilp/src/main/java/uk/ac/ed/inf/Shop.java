@@ -6,7 +6,6 @@ import java.util.ArrayList;
  * Used to parse the GSON file in
  */
 public class Shop {
-    public String name;
     public String location;
     public ArrayList<MenuItem> menu;
 

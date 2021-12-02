@@ -115,7 +115,7 @@ public class Database {
                             "orderNo char(8),"+
                             "fromLongitude double,"+
                             "fromLatitude double,"+
-                            "angle int,"+
+                            "angle integer,"+
                             "toLongitude double,"+
                             "toLatitude double)");
             System.out.println("Created flightpath table");

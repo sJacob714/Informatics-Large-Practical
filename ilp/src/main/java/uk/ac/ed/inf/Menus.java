@@ -111,8 +111,6 @@ public class Menus {
         // used to stop shop coordinates from being added to list twice
         List<Shop> previousShops = new ArrayList<>();
         LongLat tempCoordinate;
-        double centreLng;
-        double centreLat;
         What3Word word;
 
         // Goes through every item to be found
@@ -132,9 +130,7 @@ public class Menus {
 
                         // finds centre of What3Words square and adds to list of shop coordinates
                         word = converter.convert(shop.location);
-                        centreLng = (word.square.northeast.lng + word.square.southwest.lng)/2;
-                        centreLat = (word.square.northeast.lat + word.square.southwest.lat)/2;
-                        tempCoordinate = new LongLat(centreLng, centreLat);
+                        tempCoordinate = word.getCentreCoordinate();
 
                         coordinates.add(tempCoordinate);
                         break menuSearch;
