@@ -6,11 +6,27 @@ import java.util.ArrayList;
  * Used to parse the GSON file in
  */
 public class Shop {
-    public String location;
-    public ArrayList<MenuItem> menu;
+    private String location;
+    private ArrayList<MenuItem> menu;
+
+    public String getLocation(){
+        return location;
+    }
+
+    public ArrayList<MenuItem> getMenu(){
+        return menu;
+    }
 
     public static class MenuItem {
-        public String item;
-        public int pence;
+        private String item;
+        private int pence;
+
+        public String getItem() {
+            return item;
+        }
+
+        public int getPence() {
+            return pence;
+        }
     }
 }

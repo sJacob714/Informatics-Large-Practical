@@ -10,6 +10,7 @@ public class Drone {
     private final ArrayList<Order> deliveredOrders = new ArrayList<>();
     private final PathFinder pathFinder;
     private LongLat currentPosition;
+    private Order nextOrder;
 
     //For statistics
     private int totalValue;
@@ -17,13 +18,14 @@ public class Drone {
     private final int totalNumberOfOrders;
     private int numberOfOrdersDelivered;
 
-    private Order nextOrder;
-
     //Needed for final outputs
     private final ArrayList<LongLat> overallFlightPath = new ArrayList<>();
     private final ArrayList<Integer> overallAngleList = new ArrayList<>();
     private final ArrayList<String> overallOrdersList = new ArrayList<>();
 
+    //Constants
+    private final int initialBattery = 1500;
+    private final int hoverAngle = -999;
     private final LongLat appleton = new LongLat(-3.186874, 55.944494);
 
     /**
@@ -34,7 +36,7 @@ public class Drone {
      * @param noFlyZone noFlyZone drone cannot enter
      */
     public Drone(ArrayList<Order> orders, NoFlyZone noFlyZone){
-        battery = 1500;
+        battery = initialBattery;
         this.orders = orders;
         pathFinder = new PathFinder(noFlyZone);
         currentPosition = appleton;
@@ -42,7 +44,7 @@ public class Drone {
         //Finds total value of all the orders
         totalValue = 0;
         for (Order order: this.orders){
-            totalValue+=order.deliveryCost;
+            totalValue+=order.getDeliveryCost();
         }
         totalNumberOfOrders = orders.size();
     }
@@ -67,7 +69,7 @@ public class Drone {
             possibleAngles = new ArrayList<>();
 
             // for each location that need to be travelled to for the order
-            for (LongLat destination: nextOrder.destinationOrder){
+            for (LongLat destination: nextOrder.getDestinationOrder()){
                 // if possiblePath is size 0, pathfinder should start from current position,
                 // else pathfinder should start from the last coordinate in possible path
                 if (possiblePath.size()==0){
@@ -78,8 +80,8 @@ public class Drone {
                 }
                 possiblePath.addAll(pathFinder.getPath());
                 possibleAngles.addAll(pathFinder.getAngleList());
-                //add angle of -999 as drone needs to hover to pickup/deliver
-                possibleAngles.add(-999);
+                //append hover angle as drone needs to hover to pickup/deliver
+                possibleAngles.add(hoverAngle);
             }
 
             //Check if battery usage needed to make order and return to appleton is greater than battery remaining
@@ -88,13 +90,13 @@ public class Drone {
                 // for statistics
                 deliveredOrders.add(nextOrder);
                 numberOfOrdersDelivered++;
-                valueDelivered += nextOrder.deliveryCost;
+                valueDelivered += nextOrder.getDeliveryCost();
 
                 // update current position, lists and battery
                 currentPosition = possiblePath.get(possiblePath.size()-1);
                 overallFlightPath.addAll(possiblePath);
                 overallAngleList.addAll(possibleAngles);
-                overallOrdersList.addAll(Collections.nCopies(possibleAngles.size(),nextOrder.orderNo));
+                overallOrdersList.addAll(Collections.nCopies(possibleAngles.size(),nextOrder.getOrderNo()));
                 battery -= possibleAngles.size();
 
                 System.out.println("Battery Remaining: "+battery);
@@ -136,27 +138,29 @@ public class Drone {
         LongLat closestShop;
         LongLat nextOrderClosestShop;
         LongLat nextOrderLastShop;
+        ArrayList<LongLat> nextOrderShopCoordinates;
         double batteryUsageEstimate;
         double score;
 
         for (Order order : orders) {
+            nextOrderShopCoordinates = order.getShopCoordinates();
 
             // sets closest and last shop to first element in shopCoordinates for if there's only one shop
-            closestShop = order.shopCoordinates.get(0);
-            lastShop = order.shopCoordinates.get(0);
+            closestShop = nextOrderShopCoordinates.get(0);
+            lastShop = nextOrderShopCoordinates.get(0);
             // if there are two shops, orders shops based on what is closest to current position
-            if (order.shopCoordinates.size() == 2) {
-                lastShop = order.shopCoordinates.get(1);
-                if (currentPosition.distanceTo(order.shopCoordinates.get(1)) < currentPosition.distanceTo(closestShop)) {
-                    closestShop = order.shopCoordinates.get(1);
-                    lastShop = order.shopCoordinates.get(0);
+            if (nextOrderShopCoordinates.size() == 2) {
+                lastShop = nextOrderShopCoordinates.get(1);
+                if (currentPosition.distanceTo(nextOrderShopCoordinates.get(1)) < currentPosition.distanceTo(closestShop)) {
+                    closestShop = nextOrderShopCoordinates.get(1);
+                    lastShop = nextOrderShopCoordinates.get(0);
                 }
             }
 
             //calculates score based on delivery cost by estimated battery usage
             batteryUsageEstimate = Math.ceil((currentPosition.distanceTo(closestShop)
-                    + order.distanceBetweenShops + lastShop.distanceTo(order.deliverTo)) / 0.00015);
-            score = order.deliveryCost / batteryUsageEstimate;
+                    + order.getDistanceBetweenShops() + lastShop.distanceTo(order.getDeliverTo())) / 0.00015);
+            score = order.getDeliveryCost() / batteryUsageEstimate;
 
             //if score is better, updates best score and best order details
             if (score > bestScore) {
@@ -166,10 +170,10 @@ public class Drone {
                 nextOrder = order;
 
                 // saves order of destinations to be used later when creating the flight path
-                if (nextOrder.shopCoordinates.size() == 2) {
-                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrderLastShop, nextOrder.deliverTo));
+                if (nextOrder.getShopCoordinates().size() == 2) {
+                    nextOrder.setDestinationOrder(new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrderLastShop, nextOrder.getDeliverTo())));
                 } else {
-                    nextOrder.destinationOrder = new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrder.deliverTo));
+                    nextOrder.setDestinationOrder(new ArrayList<>(Arrays.asList(nextOrderClosestShop, nextOrder.getDeliverTo())));
                 }
             }
         }

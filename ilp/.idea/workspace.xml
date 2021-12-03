@@ -5,13 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/../command.txt" beforeDir="false" afterPath="$PROJECT_DIR$/../command.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Database.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Database.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Drone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Drone.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/GeoJson.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/GeoJson.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/LongLat.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/LongLat.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/NoFlyZone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/NoFlyZone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Shop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Shop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/uk/ac/ed/inf/LongLat.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -316,7 +323,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638361790706</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="created getCentreCoordinate method&#10;Small refactoring, commenting">
+      <created>1638451511927</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1638451511927</updated>
+    </task>
+    <option name="localTasksCounter" value="23" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -335,6 +349,7 @@
     <MESSAGE value="Everything Completed v1.0" />
     <MESSAGE value="JavaDocs done&#10;Possible final version" />
     <MESSAGE value="Small Changes to Final Version" />
-    <option name="LAST_COMMIT_MESSAGE" value="Small Changes to Final Version" />
+    <MESSAGE value="created getCentreCoordinate method&#10;Small refactoring, commenting" />
+    <option name="LAST_COMMIT_MESSAGE" value="created getCentreCoordinate method&#10;Small refactoring, commenting" />
   </component>
 </project>

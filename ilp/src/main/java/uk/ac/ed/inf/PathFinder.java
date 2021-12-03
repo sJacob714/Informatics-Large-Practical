@@ -34,8 +34,8 @@ public class PathFinder {
           //Creates a priority queue, will return node closest to destination when .remove() is called
           PriorityQueue<Node> queue = new PriorityQueue<>();
 
-          //Creates an initial node and then applies getNextPositions() on it to expand its frontier, sets previous angle to -999 as dummy value
-          Node node = new Node(start, null, end, queue, new ArrayList<>(List.of(start)), -999);
+          //Creates an initial node and then applies getNextPositions() on it to expand its frontier, sets previous angle to -9999 as dummy value
+          Node node = new Node(start, null, end, queue, new ArrayList<>(List.of(start)), -9999);
           node.getNextPositions();
           //traverseFrontier is called on the node, returning the finalNode which is at destination
           Node finalNode = node.traverseFrontier();
@@ -188,7 +188,7 @@ public class PathFinder {
                // reverse lists to get path and angle list from start to end
                Collections.reverse(traversedPath);
                Collections.reverse(angleList);
-               // as when initialising node, -999 was used as dummy angle, remove it form start of angle list
+               // as when initialising node, -9999 was used as dummy angle, remove it form start of angle list
                angleList.remove(0);
           }
 

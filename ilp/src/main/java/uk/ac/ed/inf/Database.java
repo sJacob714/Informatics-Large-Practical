@@ -101,9 +101,9 @@ public class Database {
             psQuery = conn.prepareStatement(
                     "insert into deliveries values (?, ?, ?)");
             for (Order order : deliveredOrders){
-                psQuery.setString(1, order.orderNo);
-                psQuery.setString(2, order.words);
-                psQuery.setInt(3, order.deliveryCost);
+                psQuery.setString(1, order.getOrderNo());
+                psQuery.setString(2, order.getWords());
+                psQuery.setInt(3, order.getDeliveryCost());
                 psQuery.execute();
             }
             System.out.println("Inserted data into deliveries table");
@@ -124,12 +124,12 @@ public class Database {
                     "insert into flightpath values (?, ?, ?, ?, ?, ?)");
             for (int i = 0; i<angleList.size(); i++) {
                 psQuery.setString(1, orderList.get(i));
-                psQuery.setDouble(2, flightPath.get(i).lng);
-                psQuery.setDouble(3, flightPath.get(i).lat);
+                psQuery.setDouble(2, flightPath.get(i).getLng());
+                psQuery.setDouble(3, flightPath.get(i).getLat());
                 psQuery.setInt(4, angleList.get(i));
                 //flightPath array should be one bigger than angleList and orderList array
-                psQuery.setDouble(5, flightPath.get(i+1).lng);
-                psQuery.setDouble(6, flightPath.get(i+1).lat);
+                psQuery.setDouble(5, flightPath.get(i+1).getLng());
+                psQuery.setDouble(6, flightPath.get(i+1).getLat());
                 psQuery.execute();
             }
             System.out.println("Inserted data into flightpath table");

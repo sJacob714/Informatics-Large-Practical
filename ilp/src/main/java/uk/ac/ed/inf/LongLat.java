@@ -2,14 +2,14 @@ package uk.ac.ed.inf;
 
 public class LongLat {
     // longitude and latitude values of the coordinate
-    public final double lng;
-    public final double lat;
+    private final double lng;
+    private final double lat;
 
     // Upper and lower limits of the longitude and latitude
-    private final double longitudeUpper = -3.184319;
-    private final double longitudeLower = -3.192473;
-    private final double latitudeUpper = 55.946233;
-    private final double latitudeLower = 55.942617;
+    private final double longitudeUpperLimit = -3.184319;
+    private final double longitudeLowerLimit = -3.192473;
+    private final double latitudeUpperLimit = 55.946233;
+    private final double latitudeLowerLimit = 55.942617;
 
     private final double move = 0.00015;
     private final int hoverAngle = -999;
@@ -31,10 +31,10 @@ public class LongLat {
      * @return True if Coordinates are in confinement area, False otherwise
      */
     public boolean isConfined(){
-        return (lng > longitudeLower)
-                && (lng < longitudeUpper)
-                && (lat > latitudeLower)
-                && (lat < latitudeUpper);
+        return (lng > longitudeLowerLimit)
+                && (lng < longitudeUpperLimit)
+                && (lat > latitudeLowerLimit)
+                && (lat < latitudeUpperLimit);
     }
 
     /**
@@ -82,5 +82,13 @@ public class LongLat {
             nextPosition = new LongLat(nextLongitude, nextLatitude);
         }
         return nextPosition;
+    }
+
+    public double getLng() {
+        return lng;
+    }
+
+    public double getLat() {
+        return lat;
     }
 }

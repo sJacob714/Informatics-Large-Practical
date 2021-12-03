@@ -88,7 +88,7 @@ public class GeoJson {
         // turns flight path into list of Point objects
         List<Point> points = new ArrayList<>();
         for (int i = 0; i < flightPath.size() - 1; i++) {
-            points.add(Point.fromLngLat(flightPath.get(i).lng, flightPath.get(i).lat));
+            points.add(Point.fromLngLat(flightPath.get(i).getLng(), flightPath.get(i).getLat()));
         }
         //converts list of Point objects to Json string of feature collection
         Geometry geometry = (Geometry) LineString.fromLngLats(points);

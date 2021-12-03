@@ -16,12 +16,12 @@ public class Menus {
     private static final HttpClient client = HttpClient.newHttpClient();
 
     //List of Shop details and menus
-    private ArrayList<Shop> ShopsList;
+    private ArrayList<Shop> shopsList;
 
     /**
      * Class constructor for the Menus class.
      * Gets information on all menu items form server.
-     * Sends a get request to the server and parses the response into a list of Menu types.
+     * Sends a get request to the server and parses the response into a list of Shop types.
      *
      * @param machineName name of the machine that needs to be accessed
      * @param port port where web server is running
@@ -59,7 +59,7 @@ public class Menus {
         if (response.statusCode()==200) {
             Type listType = new TypeToken<ArrayList<Shop>>() {
             }.getType();
-            ShopsList = new Gson().fromJson(response.body(), listType);
+            shopsList = new Gson().fromJson(response.body(), listType);
         }
         else{
             System.err.println("Server Response Failure: "+response.statusCode());
@@ -83,12 +83,12 @@ public class Menus {
         for (String search: items) {
             // Iterates through every item in every menu
             menuSearch:
-            for (Shop shops : ShopsList) {
-                for (Shop.MenuItem item : shops.menu) {
+            for (Shop shops : shopsList) {
+                for (Shop.MenuItem item : shops.getMenu()) {
 
                     // If item is within the searchList, add price to totalCost and break out of menuSearch
-                    if (item.item.equals(search)) {
-                        totalCost = totalCost + item.pence;
+                    if (item.getItem().equals(search)) {
+                        totalCost = totalCost + item.getPence();
                         break menuSearch;
                     }
                 }
@@ -117,22 +117,20 @@ public class Menus {
         for (String search: items) {
             // Iterates through every item in every menu
             menuSearch:
-            for (Shop shop : ShopsList) {
-                for (Shop.MenuItem item : shop.menu) {
+            for (Shop shop : shopsList) {
+                for (Shop.MenuItem item : shop.getMenu()) {
 
                     // If item is within the searchList, adds shop location to list
-                    if (item.item.equals(search)) {
+                    if (item.getItem().equals(search)) {
                         // makes sure shop isn't already in the list
                         if (previousShops.contains(shop)){
                             break menuSearch;
                         }
                         previousShops.add(shop);
 
-                        // finds centre of What3Words square and adds to list of shop coordinates
-                        word = converter.convert(shop.location);
-                        tempCoordinate = word.getCentreCoordinate();
-
-                        coordinates.add(tempCoordinate);
+                        // adds location to list of shop coordinates
+                        word = converter.convert(shop.getLocation());
+                        coordinates.add(word.getCoordinates());
                         break menuSearch;
                     }
                 }

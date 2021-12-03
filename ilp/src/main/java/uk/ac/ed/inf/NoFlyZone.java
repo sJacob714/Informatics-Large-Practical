@@ -54,7 +54,7 @@ public class NoFlyZone {
      */
     public boolean staysOutOfNoFly(LongLat start, LongLat end){
         // Creates a line between start and end coordinate
-        Line2D line = new Line2D.Double(start.lng, start.lat, end.lng, end.lat);
+        Line2D line = new Line2D.Double(start.getLng(), start.getLat(), end.getLng(), end.getLat());
 
         // for every line in the perimeter, checks if there is line intersection
         for (Line2D perimeter : noFlyPerimeter) {
