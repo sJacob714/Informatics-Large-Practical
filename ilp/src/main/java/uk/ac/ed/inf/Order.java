@@ -12,7 +12,6 @@ public class Order {
     private final String words;
     private final int deliveryCost;
     private final ArrayList<LongLat> shopCoordinates;
-    private final ArrayList<String> orderItems = new ArrayList<>();
     private final double distanceBetweenShops;
     private ArrayList<LongLat> destinationOrder;
 
@@ -43,6 +42,7 @@ public class Order {
         PreparedStatement psQuery = conn.prepareStatement(query);
         psQuery.setString(1, orderNo);
         ResultSet orderDetailsResults = psQuery.executeQuery();
+        ArrayList<String> orderItems = new ArrayList<>();
         while (orderDetailsResults.next()){
             orderItems.add(orderDetailsResults.getString("item"));
         }

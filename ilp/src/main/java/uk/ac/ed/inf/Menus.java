@@ -110,7 +110,6 @@ public class Menus {
         ArrayList<LongLat> coordinates = new ArrayList<>();
         // used to stop shop coordinates from being added to list twice
         List<Shop> previousShops = new ArrayList<>();
-        LongLat tempCoordinate;
         What3Word word;
 
         // Goes through every item to be found
