@@ -60,7 +60,6 @@ public class PathFinder {
      }
 
      private class Node implements Comparable<Node>{
-          private final NoFlyZone noFlyZone = PathFinder.this.noFlyZone;
           private final LongLat currentPosition;
           private final Node previousNode;
           private final LongLat end;
@@ -165,9 +164,9 @@ public class PathFinder {
           }
 
           /**
-           * Constructs traversed path of drone and list of angles drone travels
-           * used if node is at end coordinates
-           * reconstructs path from end to start, and then reverses the lists
+           * Builds back the traversed path and angleList of the drone that got it to the current node
+           * Should be used on node that is at end point
+           * Reconstructs path from end to start, and then reverses the lists
            */
           private void constructPath(){
                Node node = this;

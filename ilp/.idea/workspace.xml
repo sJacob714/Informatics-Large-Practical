@@ -6,8 +6,10 @@
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Order.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/uk/ac/ed/inf/AppTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +42,6 @@
     <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/GeoJson.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/What3Word.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Menus.java" root0="FORCE_HIGHLIGHTING" />
-    <setting file="file://$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" root0="FORCE_HIGHLIGHTING" />
     <setting file="file://$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" root0="FORCE_HIGHLIGHTING" />
   </component>
   <component name="ProjectId" id="1ylwg5nOGtyE1ByF8j9bCcmFuuQ" />
@@ -326,7 +327,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638552952655</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="removed tempCoordinates">
+      <created>1638553127739</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1638553127739</updated>
+    </task>
+    <option name="localTasksCounter" value="25" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -347,6 +355,7 @@
     <MESSAGE value="Small Changes to Final Version" />
     <MESSAGE value="created getCentreCoordinate method&#10;Small refactoring, commenting" />
     <MESSAGE value="Made everything private, added getters and setters" />
-    <option name="LAST_COMMIT_MESSAGE" value="Made everything private, added getters and setters" />
+    <MESSAGE value="removed tempCoordinates" />
+    <option name="LAST_COMMIT_MESSAGE" value="removed tempCoordinates" />
   </component>
 </project>
