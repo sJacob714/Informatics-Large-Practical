@@ -141,7 +141,7 @@ public class PathFinder {
           /**
            * find all possible next positions from current position and if valid, adds them onto frontier
            */
-          private void getNextPositions(){
+          public void getNextPositions(){
                Node nextNode;
                LongLat possibleNext;
                // set new nodes frontier to empty queue as any future updates to frontier won't be applied
@@ -168,7 +168,7 @@ public class PathFinder {
            * Should be used on node that is at end point
            * Reconstructs path from end to start, and then reverses the lists
            */
-          private void constructPath(){
+          public void constructPath(){
                Node node = this;
                angleList = new ArrayList<>();
                traversedPath = new ArrayList<>();

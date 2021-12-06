@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="53f15b5f-80d1-4a8f-b1f8-0c9c205f9393" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Drone.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/Drone.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/uk/ac/ed/inf/PathFinder.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/AppTest.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/test/java/uk/ac/ed/inf/runCode.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/uk/ac/ed/inf/AppTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,7 +64,7 @@
       <option name="PROGRAM_PARAMETERS" value="27 12 2023 9898 1527" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Drone" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -78,7 +76,7 @@
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Drone" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -93,7 +91,7 @@
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Drone" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -109,7 +107,7 @@
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Drone" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -125,7 +123,7 @@
       <module name="ilp" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="uk.ac.ed.inf.*" />
+          <option name="PATTERN" value="uk.ac.ed.inf.Drone" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
@@ -334,7 +332,14 @@
       <option name="project" value="LOCAL" />
       <updated>1638553127739</updated>
     </task>
-    <option name="localTasksCounter" value="25" />
+    <task id="LOCAL-00025" summary="Small edits to comments">
+      <created>1638584920194</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1638584920195</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
@@ -356,6 +361,7 @@
     <MESSAGE value="created getCentreCoordinate method&#10;Small refactoring, commenting" />
     <MESSAGE value="Made everything private, added getters and setters" />
     <MESSAGE value="removed tempCoordinates" />
-    <option name="LAST_COMMIT_MESSAGE" value="removed tempCoordinates" />
+    <MESSAGE value="Small edits to comments" />
+    <option name="LAST_COMMIT_MESSAGE" value="Small edits to comments" />
   </component>
 </project>

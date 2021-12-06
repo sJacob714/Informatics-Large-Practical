@@ -131,7 +131,7 @@ public class Drone {
      * Checks if deliveryCost by distance needed to travel, is better than previously best order
      * If it is, save order as best order
      */
-    public void chooseNextBestOrder(){
+    private void chooseNextBestOrder(){
         double bestScore=0;
         nextOrder = null;
         LongLat lastShop;
